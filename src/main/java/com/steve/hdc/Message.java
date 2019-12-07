@@ -1,75 +1,92 @@
 package com.steve.hdc;
 
-import java.io.*;                 //For serialization and deserialization.
-import java.nio.charset.Charset;  //For supprting UniCode.
-import java.nio.file.*;           //For supprting Files, and Path.
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 /**
- *  A class which represents a HDC message which is passed between the chat
- *  clients and the server. It provides serialization, and deserialization
- *  to/from the JSON format.
+ * A class which represents a HDC message which is passed between the chat
+ * clients and the server. It provides serialization, and deserialization
+ * to/from the JSON format.
  *
- *  @author Ardalan Ahanchi
- *  @version 1.0
+ * @author Ardalan Ahanchi
+ * @version 1.0
  */
 public class Message implements Serializable {
     // Predefined types supported in the clinet and the server *****************
     // Any other type would be a file type (Actual file content).
     // The content will differ based on the message type.
 
-    /** Message type which is a string representing a message. */
-    private static final String TYPE_MSG = "Message" ;
+    /**
+     * Message type which is a string representing a message.
+     */
+    private static final String TYPE_MSG = "Message";
 
-    /** FileName type represents a file placeholder (File's name as content) */
-    private static final String TYPE_PLACEHOLDER = "Placeholder" ;
+    /**
+     * FileName type represents a file placeholder (File's name as content)
+     */
+    private static final String TYPE_PLACEHOLDER = "Placeholder";
 
     // Message variables *******************************************************
-    private String sender ;         /**< Name of the sender of message. */
-    private String reciever ;       /**< Name of the reciever of message. */
-    private long time ;             /**< Epoch time of the message creation. */
-    private String type ;           /**< type of the message for context. */
-    private byte[] content ;        /**< Msg content which depends on type. */
+    private String sender;
+    /**
+     * < Name of the sender of message.
+     */
+    private String reciever;
+    /**
+     * < Name of the reciever of message.
+     */
+    private long time;
+    /**
+     * < Epoch time of the message creation.
+     */
+    private String type;
+    /**
+     * < type of the message for context.
+     */
+    private byte[] content;        /**< Msg content which depends on type. */
 
     // Constructors ************************************************************
 
 
     /**
-     *  A constructor which creates a text message type. It is used for exchaning
-     *  regular string messages (No data / files).
+     * A constructor which creates a text message type. It is used for exchanging
+     * regular string messages (No data / files).
      *
-     *  @param senderName Username of the sending party.
-     *  @param recieverName Username of the reciever party.
-     *  @param msgText A string which represents the message being sent.
+     * @param senderName   Username of the sending party.
+     * @param recieverName Username of the reciever party.
+     * @param msgText      A string which represents the message being sent.
      */
     public Message(String senderName, String recieverName, String msgText) {
         //Set the sender, and reciever names.
-        this.sender = senderName ;
-        this.reciever = recieverName ;
+        this.sender = senderName;
+        this.reciever = recieverName;
 
         //Calculate and set epoch time (Current time in milliseconds / 1000).
         this.time = System.currentTimeMillis() / 1000;
 
         //Set the message type, and content (Assume it's UniCode).
-        this.type = TYPE_MSG ;
+        this.type = TYPE_MSG;
         this.content = msgText.getBytes(Charset.forName("UTF-8"));
     }
 
 
     /**
-     *  A constructor which creates a data message type. This represents a file
-     *  which can be sent as a message. Please make sure fileName exists in the
-     *  correct directory before calling this constructor.
+     * A constructor which creates a data message type. This represents a file
+     * which can be sent as a message. Please make sure fileName exists in the
+     * correct directory before calling this constructor.
      *
-     *  @param senderName Username of the sending party.
-     *  @param recieverName Username of the reciever party.
-     *  @param fileName A string which represents the name of the file being sent.
-     *  @param isData A dummy boolean to mark this message as a data type.
+     * @param senderName   Username of the sending party.
+     * @param recieverName Username of the reciever party.
+     * @param fileName     A string which represents the name of the file being sent.
+     * @param isData       A dummy boolean to mark this message as a data type.
      */
     public Message(String senderName, String recieverName, String fileName, boolean isData) {
         //Set the sender, and reciever names.
-        this.sender = senderName ;
-        this.reciever = recieverName ;
+        this.sender = senderName;
+        this.reciever = recieverName;
 
         //Calculate and set epoch time (Current time in milliseconds / 1000).
         this.time = System.currentTimeMillis() / 1000;
@@ -88,10 +105,10 @@ public class Message implements Serializable {
 
 
     /**
-     *  A constructor which reconstructs the message based on the serialized
-     *  message which was previously saved to the Disk (By toDisk() method).
+     * A constructor which reconstructs the message based on the serialized
+     * message which was previously saved to the Disk (By toDisk() method).
      *
-     *  @param serializedFileName Name of the msg file which was serialized.
+     * @param serializedFileName Name of the msg file which was serialized.
      */
     public Message(String serializedFileName) {
         try {
@@ -107,11 +124,11 @@ public class Message implements Serializable {
             fis.close();
 
             //Create a shallow copy of the object into the current object.
-            this.sender = newMsg.sender ;
-            this.reciever = newMsg.reciever ;
-            this.time = newMsg.time ;
-            this.type = newMsg.type ;
-            this.content = newMsg.content ;
+            this.sender = newMsg.sender;
+            this.reciever = newMsg.reciever;
+            this.time = newMsg.time;
+            this.type = newMsg.type;
+            this.content = newMsg.content;
         } catch (Exception e) {
             //If we get here an error occured when reading serialized file.
             e.printStackTrace();
@@ -120,19 +137,19 @@ public class Message implements Serializable {
 
 
     /**
-     *  A constructor which creates a placeholder message for the passed data
-     *  message. It is used in the server to create placeolders to pass to clients.
+     * A constructor which creates a placeholder message for the passed data
+     * message. It is used in the server to create placeolders to pass to clients.
      *
-     *  @param dataMsg The Messgage object which includes the actual data.
+     * @param dataMsg The Messgage object which includes the actual data.
      */
     public Message(Message dataMsg) {
         //Same sender, reciever, and time as the data file.
-        this.sender = dataMsg.sender ;
-        this.reciever = dataMsg.reciever ;
-        this.time = dataMsg.time ;
+        this.sender = dataMsg.sender;
+        this.reciever = dataMsg.reciever;
+        this.time = dataMsg.time;
 
         //Set the type as the placeholder type.
-        this.type = TYPE_PLACEHOLDER ;
+        this.type = TYPE_PLACEHOLDER;
 
         //The message content is the File's name (+Timestamp).
         this.content = dataMsg.type.getBytes(Charset.forName("UTF-8"));
@@ -142,8 +159,8 @@ public class Message implements Serializable {
 
 
     /**
-     *  A method which is used in debugging, it prints the msg data and content
-     *  to the std err in a nice format.
+     * A method which is used in debugging, it prints the msg data and content
+     * to the std err in a nice format.
      */
     public void dump() {
         //Print the message data (General information).
@@ -160,20 +177,20 @@ public class Message implements Serializable {
 
 
     /**
-     *  A method which writes (serializes) the contents of the messgae to
-     *  the disk. It determines the fileName based on the contents of the message.
-     *  The message can be reconstructed with one of the constructors.
-     *  Specifically, public Message(String serializedFileName).
+     * A method which writes (serializes) the contents of the messgae to
+     * the disk. It determines the fileName based on the contents of the message.
+     * The message can be reconstructed with one of the constructors.
+     * Specifically, public Message(String serializedFileName).
      *
-     *  @return The file name in which the message was written to.
+     * @return The file name in which the message was written to.
      */
     public String toDisk() {
         //The File name which is returned to the calling entity.
-        String outputFile = "" ;
+        String outputFile = "";
 
         //Check if it's a regular msg, or file placeholder.
-        if(this.type.equals(TYPE_MSG) || this.type.equals(TYPE_PLACEHOLDER)) {
-            outputFile = String.valueOf(time) + "_" + this.sender + "_" + this.reciever ;
+        if (this.type.equals(TYPE_MSG) || this.type.equals(TYPE_PLACEHOLDER)) {
+            outputFile = String.valueOf(time) + "_" + this.sender + "_" + this.reciever;
 
             try {
                 //Create streams for writing to output.
@@ -193,7 +210,7 @@ public class Message implements Serializable {
 
             try {
                 //First write the actual file data to the disk.
-                outputFile = this.type ;
+                outputFile = this.type;
                 Files.write(Paths.get(outputFile), this.content);
             } catch (Exception e) {
                 //If we get here there was an error writing the file.
@@ -213,26 +230,26 @@ public class Message implements Serializable {
 
 
     /**
-     *  A method which checks if two messages are equal to each other. It does
-     *  not check the message content, but the size of the content, and the
-     *  time stamp, along with the sender, and reciever.
+     * A method which checks if two messages are equal to each other. It does
+     * not check the message content, but the size of the content, and the
+     * time stamp, along with the sender, and reciever.
      *
-     *  @param other The Message object which we're comparing it to.
-     *  @return True if the messages are the same, false otherwise.
+     * @param other The Message object which we're comparing it to.
+     * @return True if the messages are the same, false otherwise.
      */
-     public boolean equals(Message other) {
-         return this.time == other.time && this.sender.equals(other.sender) &&
+    public boolean equals(Message other) {
+        return this.time == other.time && this.sender.equals(other.sender) &&
                 this.reciever.equals(other.reciever) &&
-                this.content.length == other.content.length ;
-     }
+                this.content.length == other.content.length;
+    }
 
     // Getters *****************************************************************
 
 
     /**
-     *  A getter for the message sender's name.
+     * A getter for the message sender's name.
      *
-     *  @return A string which represents the sender's name.
+     * @return A string which represents the sender's name.
      */
     public String getSender() {
         return this.sender;
@@ -240,9 +257,9 @@ public class Message implements Serializable {
 
 
     /**
-     *  A getter for the message reciever's name.
+     * A getter for the message reciever's name.
      *
-     *  @return A string which represents the reciever's name.
+     * @return A string which represents the reciever's name.
      */
     public String getReciever() {
         return this.reciever;
@@ -250,9 +267,9 @@ public class Message implements Serializable {
 
 
     /**
-     *  A getter for the time when the message was created.
+     * A getter for the time when the message was created.
      *
-     *  @return A long value which is the Epoch time of the message creation.
+     * @return A long value which is the Epoch time of the message creation.
      */
     public long getTime() {
         return this.time;
@@ -260,11 +277,11 @@ public class Message implements Serializable {
 
 
     /**
-     *  A getter for the message's type. The type would provide context for
-     *  the message content. Predefined types are explained at the beginning of
-     *  this file.
+     * A getter for the message's type. The type would provide context for
+     * the message content. Predefined types are explained at the beginning of
+     * this file.
      *
-     *  @return A string which represents tbe message's type.
+     * @return A string which represents tbe message's type.
      */
     public String getType() {
         return this.type;
@@ -272,9 +289,9 @@ public class Message implements Serializable {
 
 
     /**
-     *  A getter which returns the message's content (Returned by reference).
+     * A getter which returns the message's content (Returned by reference).
      *
-     *  @return An array of bytes which can be interpreted based on msg type.
+     * @return An array of bytes which can be interpreted based on msg type.
      */
     public byte[] getContent() {
         return this.content;
