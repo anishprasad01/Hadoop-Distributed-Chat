@@ -4,6 +4,9 @@ import java.io.*;                 //For serialization and deserialization.
 import java.nio.charset.Charset;  //For supprting UniCode.
 import java.nio.file.*;           //For supprting Files, and Path.
 
+import com.fasterxml.jackson.databind.ObjectMapper;             //For JSON.
+import com.fasterxml.jackson.databind.SerializationFeature;     //For JSON.
+
 
 /**
  *  A class which represents a HDC message which is passed between the chat
@@ -92,8 +95,9 @@ public class Message implements Serializable {
      *  message which was previously saved to the Disk (By toDisk() method).
      *
      *  @param serializedFileName Name of the msg file which was serialized.
+     *  @param isSerialized A dummy boolean to differentiate constructors.
      */
-    public Message(String serializedFileName) {
+    public Message(String serializedFileName, boolean isSerialized) {
         try {
             //Open a stream for the serialized file.
             FileInputStream fis = new FileInputStream(serializedFileName);
@@ -116,6 +120,25 @@ public class Message implements Serializable {
             //If we get here an error occured when reading serialized file.
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     *  A constructor which reconstructs the message based on the serialized
+     *  JSON message which is passed to it.
+     *
+     *  @param jsonText Mesasge text which is used for parsing.
+     */
+    public Message(String jsonText) {
+        //Convert the string to a message object.
+        Message msg = new Message("1", "1", "1") ;//= new ObjectMapper().readValue(jsonText);
+
+        //Set the values to be the same.
+        this.sender = msg.sender;
+        this.reciever = msg.reciever;
+        this.time = msg.time;
+        this.type = msg.type;
+        this.content = msg.content;
     }
 
 
@@ -209,6 +232,28 @@ public class Message implements Serializable {
 
         //Return the name of the created file.
         return outputFile;
+    }
+
+
+    /**
+     *  A function which translates Message objects into JSON strings.
+     *
+     *  @return A string in the format of JSON which represents message.
+     */
+    public String toJSON() {
+        // Used in JacksonAPI to translate objects to JSON.
+        ObjectMapper map = new ObjectMapper();
+        String jsonText = "";
+
+        //Convert the message object into a JSON text.
+        try {
+            jsonText = map.writeValueAsString(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Return the JSON text representation.
+        return jsonText;
     }
 
 
