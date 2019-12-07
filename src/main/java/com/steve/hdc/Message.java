@@ -1,3 +1,5 @@
+package com.steve.hdc;
+
 import java.io.*;                 //For serialization and deserialization.
 import java.nio.charset.Charset;  //For supprting UniCode.
 import java.nio.file.*;           //For supprting Files, and Path.
@@ -221,7 +223,7 @@ public class Message implements Serializable {
      public boolean equals(Message other) {
          return this.time == other.time && this.sender.equals(other.sender) &&
                 this.reciever.equals(other.reciever) &&
-                this.content.length == other.content.length ; 
+                this.content.length == other.content.length ;
      }
 
     // Getters *****************************************************************
