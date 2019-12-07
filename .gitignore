@@ -24,3 +24,8 @@ hs_err_pid*
 
 # Don't include the target directory (Contains the built files).
 target
+src/test/test.iml
+src/main/main.iml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
