@@ -18,9 +18,9 @@ public class Bindings {
         res.send("About page");
     }
 
-    @DynExpress(context = "/msg") // Only context is defined, method=RequestMethod.GET is used as method
+    @DynExpress(context = "/message") // Only context is defined, method=RequestMethod.GET is used as method
     public void getMsg(Request req, Response res) {
-        msg = new Message("mike", "anish", "hello");
+        Message msg = new Message("mike", "anish", "hello");
 
         res.send("Your msg: " + msg);
     }
