@@ -20,9 +20,9 @@ public class Bindings {
 
     @DynExpress(context = "/msg") // Only context is defined, method=RequestMethod.GET is used as method
     public void getMsg(Request req, Response res) {
-        msg = new Message("mike", "anish", "hello");
+        Message msg = new Message("mike", "anish", "hello");
 
-        res.send("Your msg: " + msg);
+        res.send("Your msg: " + msg.getSender());
     }
 
     @DynExpress(context = "/impressum", method = RequestMethod.PATCH) // Both defined
