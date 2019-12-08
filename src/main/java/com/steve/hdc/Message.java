@@ -4,8 +4,7 @@ import java.io.*;                 //For serialization and deserialization.
 import java.nio.charset.Charset;  //For supprting UniCode.
 import java.nio.file.*;           //For supprting Files, and Path.
 
-import com.fasterxml.jackson.databind.ObjectMapper;             //For JSON.
-import com.fasterxml.jackson.databind.SerializationFeature;     //For JSON.
+import org.json.JSONObject ;     //For JSON.
 
 
 /**
@@ -241,19 +240,18 @@ public class Message implements Serializable {
      *  @return A string in the format of JSON which represents message.
      */
     public String toJSON() {
-        // Used in JacksonAPI to translate objects to JSON.
-        ObjectMapper map = new ObjectMapper();
-        String jsonText = "";
+        //Used to put the values in JSON format.
+        JSONObject obj = new JSONObject();
 
-        //Convert the message object into a JSON text.
-        try {
-            jsonText = map.writeValueAsString(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //Put all the class values to JSON.
+        obj.put("sender", this.sender);
+        obj.put("reciever", this.reciever);
+        obj.put("time", this.time);
+        obj.put("type", this.type);
+        //obj.put("content", Arrays.toString(this.content));
 
-        //Return the JSON text representation.
-        return jsonText;
+        //Return the string back.
+        return obj.toString();
     }
 
 
