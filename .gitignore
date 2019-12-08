@@ -29,3 +29,29 @@ src/main/main.iml
 .idea/vcs.xml
 .idea/modules.xml
 .idea/misc.xml
+Hadoop-Distributed-Chat.iml
+Hadoop-Distributed-Chat (2).iml
+Hadoop-Distributed-Chat (1).iml
+.idea/workspace.xml
+.idea/saveactions_settings.xml
+.idea/libraries/Maven__org_springframework_spring_jcl_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_spring_expression_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_spring_core_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_spring_context_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_spring_beans_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_spring_aop_5_1_8_RELEASE.xml
+.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_1_6_RELEASE.xml
+.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_1_6_RELEASE.xml
+.idea/libraries/Maven__org_springframework_boot_spring_boot_2_1_6_RELEASE.xml
+.idea/libraries/Maven__org_json_json_20190722.xml
+.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_10_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_10_1.xml
+.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_10_1.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/dictionaries
+.idea/compiler.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/checkstyle-idea.xml
+.idea/$PRODUCT_WORKSPACE_FILE$
+.idea/$CACHE_FILE$
