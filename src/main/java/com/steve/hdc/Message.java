@@ -1,14 +1,12 @@
 package com.steve.hdc;
 
-import java.io.*;                 //For serialization and deserialization.
-import java.nio.charset.Charset;  //For supprting UniCode.
-import java.nio.charset.StandardCharsets;  //For UTF-8
-import java.nio.file.*;           //For supprting Files, and Path.
 import java.lang.*;
 import java.util.*;
-import org.json.JSONObject ;     //For JSON.
-
-//Version 1.0
+import java.io.*;                           //For de/serialization.
+import java.nio.charset.Charset;            //For supprting UniCode.
+import java.nio.charset.StandardCharsets;   //For UTF-8
+import java.nio.file.*;                     //For supprting Files, and Path.
+import org.json.JSONObject ;                //For JSON parsing.
 
 
 /**

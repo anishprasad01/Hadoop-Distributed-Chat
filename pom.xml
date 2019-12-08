@@ -12,6 +12,13 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+    
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
 
     <dependencies>
@@ -93,6 +100,7 @@
                            <artifactSet>
                                <includes>
                                    <include>org.json:json</include>
+                                   <include>com.github.Simonwep:java-express</include>
                                </includes>
                            </artifactSet>
                        </configuration>
