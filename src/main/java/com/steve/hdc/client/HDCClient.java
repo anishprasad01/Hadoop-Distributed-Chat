@@ -11,23 +11,44 @@ import javax.ws.rs.core.Response;
 public class HDCClient {
     private static final String REST_URI = "http://localhost:8082/message";
     private Client client = ClientBuilder.newClient();
+    private User user;
 
-    public Response createJsonEmployee(Employee emp) {
-        return client
-                .target(REST_URI)
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(emp, MediaType.APPLICATION_JSON));
+    // get messages after time
+    public HDCClient(User usr) {
+        this.user = new User();
     }
 
-    public Employee getJsonEmployee(int id) {
+
+//    public sendMessage()
+
+    /**
+     * A method which attempts to register a new user with the HDC service.
+     *
+     * @param userName Username of the registering party.
+     */
+    public Response register(String userName) {
+        User newUser = new User(userName);
         return client
                 .target(REST_URI)
-                .path(String.valueOf(id))
+                .path("/register")
                 .request(MediaType.APPLICATION_JSON)
-                .get(Employee.class);
+                .post(Entity.entity(newUser, MediaType.APPLICATION_JSON));
     }
 
-    public Response sendMessage(Message msg){
+    public User register(String) {
+
+    }
+
+    public Message getMessages(Message msg, User usr, long timeStamp) {
+        return client
+                .target(REST_URI)
+                .path(String.valueOf(usr.getId()))
+                .request(MediaType.APPLICATION_JSON)
+                .get(Message.class);
+    }
+
+    public Response sendMessage(Receiver rcvr, String textMsg) {
+        Message msg = new Message(textMsg);
         return client
                 .target(REST_URI)
                 .request(MediaType.APPLICATION_JSON)
