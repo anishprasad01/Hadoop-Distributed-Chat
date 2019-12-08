@@ -1,5 +1,6 @@
 package com.steve.hdc;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
  * @author Ardalan Ahanchi
  * @version 1.0
  */
+@XmlRootElement
 public class Message implements Serializable {
     // Predefined types supported in the clinet and the server *****************
     // Any other type would be a file type (Actual file content).

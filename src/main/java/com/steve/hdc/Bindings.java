@@ -4,6 +4,11 @@ import express.DynExpress;
 import express.http.RequestMethod;
 import express.http.request.Request;
 import express.http.response.Response;
+import express.utils.Status;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public class Bindings {
@@ -30,8 +35,18 @@ public class Bindings {
         res.send("Impressum page was patched");
     }
 
-    @DynExpress(method = RequestMethod.POST) // Only the method is defined, "/" is used as context
-    public void postIndex(Request req, Response res) {
-        res.send("POST to index");
+    @DynExpress(context = "/message", method = RequestMethod.POST) // Only the method is defined, "/" is used as context
+    public void postMessage(Request req, Response res){
+        InputStream stream = req.getBody();
+        String body = null;
+        try {
+            body = IOUtils.toString(stream, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        res.setStatus(Status._201);
+        res.send("Input was:" + body);
     }
+
+
 }
