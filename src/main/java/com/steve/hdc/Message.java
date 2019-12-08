@@ -2,9 +2,13 @@ package com.steve.hdc;
 
 import java.io.*;                 //For serialization and deserialization.
 import java.nio.charset.Charset;  //For supprting UniCode.
+import java.nio.charset.StandardCharsets;  //For UTF-8
 import java.nio.file.*;           //For supprting Files, and Path.
-
+import java.lang.*;
+import java.util.*;
 import org.json.JSONObject ;     //For JSON.
+
+//Version 1.0
 
 
 /**
@@ -129,15 +133,21 @@ public class Message implements Serializable {
      *  @param jsonText Mesasge text which is used for parsing.
      */
     public Message(String jsonText) {
-        //Convert the string to a message object.
-        Message msg = new Message("1", "1", "1") ;//= new ObjectMapper().readValue(jsonText);
+        //Create a JSON object from the text.
+        JSONObject obj = new JSONObject(jsonText);
 
-        //Set the values to be the same.
-        this.sender = msg.sender;
-        this.reciever = msg.reciever;
-        this.time = msg.time;
-        this.type = msg.type;
-        this.content = msg.content;
+        //Get the values from the JSON object and initialize.
+        this.sender = (String) obj.get("sender");
+        this.reciever = (String) obj.get("reciever");
+        this.time = Long.parseLong((String) obj.get("time"));
+        this.type = (String) obj.get("type");
+
+        //Decode the string content into an array of bytes.
+        try {
+            this.content = Base64.getDecoder().decode((String) obj.get("content"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -246,9 +256,15 @@ public class Message implements Serializable {
         //Put all the class values to JSON.
         obj.put("sender", this.sender);
         obj.put("reciever", this.reciever);
-        obj.put("time", this.time);
+        obj.put("time", String.valueOf(this.time));
         obj.put("type", this.type);
-        //obj.put("content", Arrays.toString(this.content));
+
+        //Encode the content and put it in the JSON object.
+        try {
+            obj.put("content", Base64.getEncoder().encodeToString(this.content));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         //Return the string back.
         return obj.toString();
@@ -263,11 +279,12 @@ public class Message implements Serializable {
      *  @param other The Message object which we're comparing it to.
      *  @return True if the messages are the same, false otherwise.
      */
-     public boolean equals(Message other) {
-         return this.time == other.time && this.sender.equals(other.sender) &&
+    public boolean equals(Message other) {
+        return this.time == other.time && this.sender.equals(other.sender) &&
                 this.reciever.equals(other.reciever) &&
                 this.content.length == other.content.length ;
-     }
+    }
+
 
     // Getters *****************************************************************
 

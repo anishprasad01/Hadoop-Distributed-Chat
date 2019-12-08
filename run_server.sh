@@ -7,7 +7,5 @@ mvn package
 
 echo '--------------- Running ------------------'
 
-# Move to the right directory, and run it.
-cd target/classes
-java com.steve.hdc.Server
-cd ../..
+# Run the script
+java -jar ./target/Hadoop-Distributed-Chat-1.0.jar
