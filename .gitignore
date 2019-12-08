@@ -24,3 +24,6 @@ hs_err_pid*
 
 # Don't include the target directory (Contains the built files).
 target
+
+# IntelliJ files
+*/idea

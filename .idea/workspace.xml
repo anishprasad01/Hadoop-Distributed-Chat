@@ -46,6 +46,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
+<<<<<<< HEAD
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -68,6 +69,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+=======
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\anish\Documents\Projects\Hadoop-Distributed-Chat\src\main\java\com\steve\hdc\client" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.ClientGUI">
+>>>>>>> 8211613059706fbb8bc9a7b13b8b4496eac67094
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.steve.hdc.App" />
       <module name="Hadoop-Distributed-Chat" />
@@ -92,6 +101,13 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientGUI" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.steve.hdc.client.ClientGUI" />
+      <module name="Hadoop-Distributed-Chat" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -122,6 +138,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.ClientGUI" />
       <item itemvalue="Application.App" />
       <item itemvalue="Application.Apple" />
       <item itemvalue="JUnit.ClientTests" />
@@ -140,38 +157,38 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1345" y="-1081" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575764698653">
+    <state x="1345" y="-1081" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575766688132">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state x="1345" y="-1081" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575764698653" />
+    <state x="1345" y="-1081" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766688132" />
     <state x="263" y="-1348" width="3256" height="1226" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1575766218533">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
     <state x="263" y="-1348" width="3256" height="1226" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766218532" />
-    <state x="1620" y="-952" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1575764689505">
+    <state x="1620" y="-952" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1575766682061">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state x="1620" y="-952" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575764689505" />
+    <state x="1620" y="-952" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766682061" />
     <state x="1699" y="-847" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1575756955245">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
     <state x="1699" y="-847" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575756955245" />
-    <state width="3397" height="380" key="GridCell.Tab.0.bottom" timestamp="1575766222572">
+    <state width="3397" height="380" key="GridCell.Tab.0.bottom" timestamp="1575767355544">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state width="3397" height="380" key="GridCell.Tab.0.bottom/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766222572" />
-    <state width="3397" height="380" key="GridCell.Tab.0.center" timestamp="1575766222572">
+    <state width="3397" height="380" key="GridCell.Tab.0.bottom/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575767355544" />
+    <state width="3397" height="380" key="GridCell.Tab.0.center" timestamp="1575767355543">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state width="3397" height="380" key="GridCell.Tab.0.center/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766222572" />
-    <state width="3397" height="380" key="GridCell.Tab.0.left" timestamp="1575766222572">
+    <state width="3397" height="380" key="GridCell.Tab.0.center/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575767355543" />
+    <state width="3397" height="380" key="GridCell.Tab.0.left" timestamp="1575767355543">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state width="3397" height="380" key="GridCell.Tab.0.left/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766222572" />
-    <state width="3397" height="380" key="GridCell.Tab.0.right" timestamp="1575766222572">
+    <state width="3397" height="380" key="GridCell.Tab.0.left/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575767355543" />
+    <state width="3397" height="380" key="GridCell.Tab.0.right" timestamp="1575767355544">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
-    <state width="3397" height="380" key="GridCell.Tab.0.right/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575766222572" />
+    <state width="3397" height="380" key="GridCell.Tab.0.right/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575767355544" />
     <state x="1421" y="-1081" key="Maven.ArtifactSearchDialog" timestamp="1575765527996">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
