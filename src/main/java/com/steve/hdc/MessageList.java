@@ -99,4 +99,13 @@ public class MessageList {
         }
         return msgArr;
     }
+
+    /**
+     *  A method which retrieves the number of messages in the list.
+     *
+     *  @return The number of messages in the list.
+     */
+    public int size() {
+        return list.size();
+    }
 }

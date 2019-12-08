@@ -174,6 +174,7 @@ public class Client {
      *  @param pass The password for the sneding user (Itself), to be used in Auth.
      *  @param timeFrom Epoch time (in milliseconds) for the first message retrieved.
      *  @return An array of message objects with all the corresponding messages.
+     *          Null if no messages were present.
      */
     public static Message[] getMsg(String user, String pass, long timeFrom) {
         //Used to store the list of messages recieved from the server.
@@ -235,6 +236,11 @@ public class Client {
             con.disconnect();       //Disconnect from the server.
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        //If no messages were queued, send null.
+        if(msgList.size() == 0) {
+            return null;
         }
 
         //Convert the message list into an array of messages and return it.
@@ -302,6 +308,11 @@ public class Client {
 
                 //When there was an error in authentication.
                 case 403:   System.err.println("Client: Authentication error.");
+                            System.err.println("        " + con.getResponseMessage());
+                            break;
+
+                //If the file does not exist.
+                case 404:   System.err.println("Client: File does not exist.");
                             System.err.println("        " + con.getResponseMessage());
                             break;
 

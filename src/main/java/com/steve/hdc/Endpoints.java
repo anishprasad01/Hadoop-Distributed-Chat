@@ -17,7 +17,6 @@ import express.utils.Status;
  *  messages, and files from the server. These are based on agreed transfer
  *  protocols between the client and the server.
  *  TODO: Add basic HTTP authentication support.
- *  TODO: Add routing, storage, and error checking.
  *
  *  @author Ardalan Ahanchi
  *  @version 0.1
@@ -61,20 +60,32 @@ public class Endpoints {
         String user = (String) obj.get("user");
         String pass = (String) obj.get("pass");
 
-        //TODO: Remove This section, instead add logic.
+        //Check if Username is invalid.
+        if(! Server.signupCheckUser(user)) {
+            res.setStatus(Status._409);                     //Code: Conflict
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //Check if Password is invalid.
+        if(! Server.signupCheckUser(user)) {
+            res.setStatus(Status._409);                     //Code: Not Acceptable
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //Create the user, and check it's status.
+        if(! Server.signup(user, pass)) {
+            res.setStatus(Status._400);                     //Code: Bad Request
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //If we get here everythin wen't according to the plan.
         System.err.println("Server: New user requested, user=" + user + " pass=" + pass);
 
-        //TODO: Check if user/pass are valid, and successfully signed up.
-        if(true) {
-            //TODO: Save the user/pass in the proper place.
-            res.setStatus(Status._201); //Code: Successfully Created
-        } else if (true) {              //If username is invalid.
-            res.setStatus(Status._409); //Code: Conflict
-        } else if (true) {              //If password is invalid
-            res.setStatus(Status._406); //Code: Not Acceptable
-        } else {                        //If it's unknown
-            res.setStatus(Status._400); //Code: Bad Request
-        }
+        //Send success response
+        res.setStatus(Status._201);                         //Code: Successfully Created
 
         //Send the response back.
         res.send();
@@ -86,6 +97,7 @@ public class Endpoints {
      *  The send endpoint, is used by the clients to send messages. It is passed
      *  a JSON object (Message serialized). It reads it and routes it to the right
      *  recipient. It communicates with the client with the agreed upon protocol.
+     *  TODO: Get user/pass from basic Auth.
      *
      *  @param req The HTTP request Object.
      *  @param res The HTTP response Object.
@@ -99,31 +111,36 @@ public class Endpoints {
         Scanner s = new Scanner(stream).useDelimiter("\\A");
         String body = s.hasNext() ? s.next() : "";
 
-        //Create a message object from the JSON of the body.
-        //TODO: Check for errors.
-        Message m = new Message(body);
+        //TODO: Retrieve User/Pass from simple AUTH.
+        String user = "SampleUser";
+        String pass = "SamplePassHash";
 
-        //TODO: Check if the user/pass are correct for basic auth.
-        //TODO: Check if sender/recipient are correct in message.
-
-        //TODO: Remove (Only for testing).
-        m.dump();   //Show message content.
-
-        //TODO: Route the message to the right client.
-
-        //TODO: Check if everything went alright.
-        if(!true) {
-            res.setStatus(Status._201); //Code: Successfully Created
-        } else if (true) {              //If user/password is invalid
-            res.setStatus(Status._403); //Code: Forbidden
-        } else if (true) {              //If sender/recipient are invalid
-            res.setStatus(Status._406); //Code: Not Acceptable
-        } else {                        //If it's unknown
-            res.setStatus(Status._400); //Code: Bad Request
+        //Check if authentication is unsuccessful.
+        if(! Server.auth(user, pass)) {
+            res.setStatus(Status._403);                     //Code: Forbidden
+            res.send();                                     //Send response back.
+            return;
         }
 
-        //Send the response back.
-        res.send();
+        //Create a message object from the JSON of the body.
+        Message msg = new Message(body);
+
+        //Check if the recipient exists (is a valid user), and the sender
+        if(Server.userExists(msg.getReciever()) && msg.getSender().equals(user)) {
+            Server.route(msg);          //Route the message to the right user/s.
+        } else {
+            //If the message is not acceptable (sender/recipient are invalid).
+            res.setStatus(Status._406);                     //Code: Not Acceptable
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //TODO: Remove (Only for testing).
+        msg.dump();   //Show message content.
+
+        //If everything went alright.
+        res.setStatus(Status._201);                         //Code: Successfully Created
+        res.send();                                         //Send the response back.
     }
 
 
@@ -133,6 +150,7 @@ public class Endpoints {
      *  a timestamp. It groups all the messagaes from that timestamp into a JSON
      *  text, and sends it over to the client.  It communicates with the client
      *  with the agreed upon protocol.
+     *  TODO: Get user/pass from basic Auth.
      *
      *  @param req The HTTP request Object.
      *  @param res The HTTP response Object.
@@ -141,21 +159,26 @@ public class Endpoints {
     public void getMsg(Request req, Response res) {
         System.err.println("Server: Recieve Message requested from client " + req.getIp());
 
+        //TODO: Retrieve User/Pass from simple AUTH.
+        String user = "SampleUser";
+        String pass = "SamplePassHash";
+
+        //Check if authentication is unsuccessful.
+        if(! Server.auth(user, pass)) {
+            res.setStatus(Status._403);                     //Code: Forbidden
+            res.send();                                     //Send response back.
+            return;
+        }
+
         //Get the time-from parameter from the request.
         long timeFrom = Long.parseLong((String) req.getHeader("Time-From").get(0));
 
-        //TODO: Add some routing code to retrieve messages.
-        //TODO: Remove the example code.
-        MessageList testList = new MessageList();
-        testList.add(new Message("B", "A", "Test Message 1"));
-        testList.add(new Message("C", "A", "Test Message 2"));
-        testList.add(new Message("D", "A", "Test Message 2"));
+        //Retrieve messages from the server.
+        MessageList messages = Server.getMessages(user, timeFrom);
 
-        res.setStatus(Status._200);
-        res.send(testList.toJSON());
-
-        //TODO: Add error checking.
-        //TODO: Send 403 when auth error, 200 when ok.
+        //If we get here everything went alright.
+        res.setStatus(Status._200);                         //Code: OK
+        res.send(messages.toJSON());                        //Send message and response.
     }
 
 
@@ -165,6 +188,7 @@ public class Endpoints {
      *  It is passed a filename. It reads the message into a JSON string and
      *  sends it over to the client.  It communicates with the client
      *  with the agreed upon protocol.
+     *  TODO: Get user/pass from basic Auth.
      *
      *  @param req The HTTP request Object.
      *  @param res The HTTP response Object.
@@ -176,13 +200,29 @@ public class Endpoints {
         //Get the filename parameter from the request.
         String fileName = (String) req.getHeader("File-Name").get(0);
 
-        //TODO: Add some routing code to retrieve messages (files).
-        //TODO: Remove the example code.
-        Message test = new Message("A", "B", "Test Message 1");
-        res.setStatus(Status._200);
-        res.send(test.toJSON());
+        //TODO: Retrieve User/Pass from simple AUTH.
+        String user = "SampleUser";
+        String pass = "SamplePassHash";
 
-        //TODO: Add error checking.
-        //TODO: Send 403 when auth error, 200 when ok.
+        //Check if authentication is unsuccessful.
+        if(! Server.auth(user, pass)) {
+            res.setStatus(Status._403);                     //Code: Forbidden
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //Retrieve the file from the server and make sure it exists.
+        Message file = Server.getFile(user, fileName);
+
+        //Check if file doesn't exist.
+        if(file == null) {
+            res.setStatus(Status._404);                     //Code: Not Found.
+            res.send();                                     //Send response back.
+            return;
+        }
+
+        //If we get here everything went fine.
+        res.setStatus(Status._200);                         //Code: OK
+        res.send(file.toJSON());                            //Send message and response.
     }
 }
