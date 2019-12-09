@@ -49,6 +49,7 @@
                 <includes>
                   <include>org.json:json</include>
                   <include>com.github.Simonwep:java-express</include>
+                  <include>org.apache.hadoop:hadoop-common</include>
                 </includes>
               </artifactSet>
             </configuration>
@@ -75,24 +76,6 @@
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-common</artifactId>
-      <version>3.2.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20190722</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.Simonwep</groupId>
-      <artifactId>java-express</artifactId>
-      <version>0.1.1</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>

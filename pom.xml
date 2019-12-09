@@ -108,6 +108,7 @@
                                <includes>
                                    <include>org.json:json</include>
                                    <include>com.github.Simonwep:java-express</include>
+                                   <include>org.apache.hadoop:hadoop-common</include>
                                </includes>
                            </artifactSet>
                        </configuration>
