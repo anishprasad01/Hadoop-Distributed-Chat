@@ -1,21 +1,21 @@
 package com.steve.hdc;
 
-import java.io.*;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.Object;
 import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
 import org.apache.hadoop.io.IOUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataManager{
     static{
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
     }
-    public void createFolder(String foldername){
+    public boolean createFolder(String foldername){
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –mkdir " + foldername);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -34,9 +34,10 @@ public class DataManager{
         } catch(IOException e){
             e.printStackTrace();
         }
-
+//TEMP
+        return true;
     }
-    public void createFile(String local, String hdfs){
+    public boolean createFile(String local, String hdfs){
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –put " + local + " " + hdfs);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -55,10 +56,11 @@ public class DataManager{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    //TEMP
+        return true;
     }
 
-    public InputStream readFile(String filename) {
+    public InputStream readFile(String filename) throws IOException {
         InputStream in = null;
         String str1 = "hdfs://localhost:8080";
         in = new URL(str1).openStream();
