@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea6e3978-a2db-40c8-a1d0-a6a4e69da17c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_10_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_10_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_10_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_1_6_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_1_6_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_1_6_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_1_8_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_1_8_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_1_8_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_1_8_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_1_8_RELEASE.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_1_8_RELEASE.xml" beforeDir="false" />
+    <list default="true" id="c3de13d3-e5a4-43a7-901c-2660c43c664a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Hadoop-Distributed-Chat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Hadoop-Distributed-Chat.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/DataManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +32,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="1UfgJmU3hEGGsmZbUvphnQ9UteF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -58,7 +52,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.ClientGui">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.steve.hdc.App" />
       <module name="Hadoop-Distributed-Chat" />
@@ -83,6 +77,13 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientGui" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.steve.hdc.ClientGui" />
+      <module name="Hadoop-Distributed-Chat (1)" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -165,6 +166,7 @@
     </configuration>
     <list>
       <item itemvalue="Application.Server" />
+      <item itemvalue="Application.ClientGui" />
       <item itemvalue="Application.App" />
       <item itemvalue="Application.Apple" />
     </list>
@@ -194,18 +196,34 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1990" y="-1079" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575851102671">
+    <state x="1990" y="-1079" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575856252569">
       <screen x="197" y="-1440" width="3440" height="1410" />
     </state>
-    <state x="1990" y="-1079" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575851102671" />
-    <state x="2265" y="-950" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1575851088595">
+    <state x="1990" y="-1079" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856252569" />
+    <state x="2265" y="-950" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1575856245773">
       <screen x="197" y="-1440" width="3440" height="1410" />
     </state>
-    <state x="2265" y="-950" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575851088595" />
+    <state x="2265" y="-950" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856245773" />
     <state x="1699" y="-847" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1575756955245">
       <screen x="171" y="-1440" width="3440" height="1410" />
     </state>
     <state x="1699" y="-847" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1280.690/171.-1440.3440.1410@171.-1440.3440.1410" timestamp="1575756955245" />
+    <state width="3397" height="404" key="GridCell.Tab.0.bottom" timestamp="1575856491094">
+      <screen x="197" y="-1440" width="3440" height="1410" />
+    </state>
+    <state width="3397" height="404" key="GridCell.Tab.0.bottom/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856491094" />
+    <state width="3397" height="404" key="GridCell.Tab.0.center" timestamp="1575856491094">
+      <screen x="197" y="-1440" width="3440" height="1410" />
+    </state>
+    <state width="3397" height="404" key="GridCell.Tab.0.center/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856491094" />
+    <state width="3397" height="404" key="GridCell.Tab.0.left" timestamp="1575856491094">
+      <screen x="197" y="-1440" width="3440" height="1410" />
+    </state>
+    <state width="3397" height="404" key="GridCell.Tab.0.left/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856491094" />
+    <state width="3397" height="404" key="GridCell.Tab.0.right" timestamp="1575856491094">
+      <screen x="197" y="-1440" width="3440" height="1410" />
+    </state>
+    <state width="3397" height="404" key="GridCell.Tab.0.right/0.0.1280.690/197.-1440.3440.1410@197.-1440.3440.1410" timestamp="1575856491094" />
     <state x="2066" y="-1079" key="Maven.ArtifactSearchDialog" timestamp="1575851047700">
       <screen x="197" y="-1440" width="3440" height="1410" />
     </state>
