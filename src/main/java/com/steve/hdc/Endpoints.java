@@ -68,7 +68,7 @@ public class Endpoints {
         }
 
         //Check if Password is invalid.
-        if(! Server.signupCheckUser(user)) {
+        if(! Server.signupCheckPass(pass)) {
             res.setStatus(Status._409);                     //Code: Not Acceptable
             res.send();                                     //Send response back.
             return;

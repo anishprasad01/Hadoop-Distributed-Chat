@@ -15,7 +15,7 @@ public class DataManager{
     static{
         URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
     }
-    public boolean createFolder(String foldername){
+    public static boolean createFolder(String foldername){
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –mkdir " + foldername);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -37,7 +37,7 @@ public class DataManager{
 //TEMP
         return true;
     }
-    public boolean createFile(String local, String hdfs){
+    public static boolean createFile(String local, String hdfs){
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –put " + local + " " + hdfs);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -60,7 +60,7 @@ public class DataManager{
         return true;
     }
 
-    public InputStream readFile(String filename) throws IOException {
+    public static InputStream readFile(String filename) throws IOException {
         InputStream in = null;
         String str1 = "hdfs://localhost:8080";
         in = new URL(str1).openStream();
@@ -68,7 +68,7 @@ public class DataManager{
         return in;
     }
 
-    public List<String> fileList(String filename){
+    public static List<String> fileList(String filename){
         List<String> arr = new ArrayList<String> ();
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –ls " + filename);
