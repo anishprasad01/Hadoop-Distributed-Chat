@@ -55,3 +55,4 @@ Hadoop-Distributed-Chat (1).iml
 .idea/checkstyle-idea.xml
 .idea/$PRODUCT_WORKSPACE_FILE$
 .idea/$CACHE_FILE$
+*.xml
