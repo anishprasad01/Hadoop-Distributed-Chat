@@ -29,8 +29,8 @@ public class Message implements Serializable {
     private static final String TYPE_PLACEHOLDER = "Placeholder" ;
 
     // Message variables *******************************************************
-    private String sender ;         /**< Name of the sender of message. */
-    private String reciever ;       /**< Name of the reciever of message. */
+    String sender ;         /**< Name of the sender of message. */
+    String reciever ;       /**< Name of the reciever of message. */
     private long time ;             /**< Epoch time of the message creation. */
     private String type ;           /**< type of the message for context. */
     private byte[] content ;        /**< Msg content which depends on type. */

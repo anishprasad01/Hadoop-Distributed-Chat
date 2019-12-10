@@ -6,13 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Hadoop-Distributed-Chat" />
+        <module name="Hadoop-Distributed-Chat (2)" />
         <module name="Hadoop-Distributed-Chat (1)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Hadoop-Distributed-Chat" target="1.8" />
       <module name="Hadoop-Distributed-Chat (1)" target="1.8" />
+      <module name="Hadoop-Distributed-Chat (2)" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

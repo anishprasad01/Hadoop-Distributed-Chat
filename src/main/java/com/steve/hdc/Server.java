@@ -65,7 +65,7 @@ public class Server {
         //Remove the local copy of the message.
         File file = new File(fileName);
         if(!file.delete()) {
-            System.out.err("Server: Error: Can't delete file from local storage");
+            System.err.println("Server: Error: Can't delete file from local storage");
         }
     }
 
@@ -106,6 +106,9 @@ public class Server {
 
         //Synchronize the database to the file system.
         Server.sync();
+
+        //TEMP, IMPLEMENT PROPER LOGIC
+        return true;
     }
 
 
@@ -188,7 +191,7 @@ public class Server {
         }
 
         //If we get here, authentication was Successfully done.
-        return true.
+        return true;
     }
 
 
