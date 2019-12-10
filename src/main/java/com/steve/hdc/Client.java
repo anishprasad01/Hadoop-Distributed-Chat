@@ -127,8 +127,6 @@ public class Client {
             con.setRequestProperty("Accept", "application/json");
             con.setRequestProperty("Authorization", basicAuth);
 
-            //TODO: Add basic HTTP auth.
-
             // Send post request and write the JSON data from the message.
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
@@ -205,8 +203,6 @@ public class Client {
 
             //Save the time as a property.
             con.setRequestProperty("Time-From", String.valueOf(timeFrom));
-
-            //TODO: Add basic HTTP auth.
 
             //Get the response code and check if it was successful.
             Integer response = con.getResponseCode();
@@ -356,11 +352,6 @@ public class Client {
 
     private static String credentials(String user, String pass) {
         String userCredentials = user + " " + pass;
-//        String userAuthEncode = new String(Base64.getEncoder().encode(userCredentials.getBytes()));
-//
-//        String userAuthDecode = new String(Base64.getDecoder().decode(userAuthEncode));
-//        System.out.println("userAuthEncode: " + userAuthEncode);
-//        System.out.println("userAuthDecode: " + userAuthDecode);
         return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
     }
 }

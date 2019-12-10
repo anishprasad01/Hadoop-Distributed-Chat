@@ -199,13 +199,11 @@ public class Server {
     public static boolean auth(String user, String pass) {
         //If the user does not exist, return false.
         if (!Server.userExists(user)) {
-            System.out.println("here 1");
             return false;
         }
 
         //If the password is incorrect return false.
         if (!users.get(user).equals(pass)) {
-            System.out.println("here 2");
             return false;
         }
 
@@ -218,11 +216,9 @@ public class Server {
         int left = authString.indexOf("c");
         int right = authString.indexOf("]");
         String authInfo = authString.substring(left + 2, right);
-        System.out.println("authinfo: " + authInfo);
         String decodedAuth = new String(Base64.getDecoder().decode(authInfo.getBytes()));
         return decodedAuth.split(" ");
     }
-
 
     public static void main(String[] args) {
         //Initialize and Start the server and wait for clients.
