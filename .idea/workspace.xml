@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7e4046d-b60e-4109-ae4f-f12e2fa12d10" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/$CACHE_FILE$" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/saveactions_settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hadoop-Distributed-Chat.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/ClientGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,22 +65,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="689" y="303" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1575936564846" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1575938291705">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1575939532715">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575938291705" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1575938291705">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1575939532715" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1575939532715">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575938291705" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1575938291705">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1575939532715" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1575939532715">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575938291705" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1575938291705">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1575939532715" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1575939532715">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575938291705" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1575939532715" />
     <state x="656" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1575934974247">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

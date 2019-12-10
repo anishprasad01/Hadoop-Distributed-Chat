@@ -5,6 +5,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 
 public class ClientGui {
     private JButton sendButton;
@@ -112,6 +113,7 @@ public class ClientGui {
                 }
             }
         });
+        //getMessages();
     }
 
     public static void main(String[] args) {
@@ -120,8 +122,32 @@ public class ClientGui {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
 
+    public void getMessages(){
+        String username = usernameField.getText();
+        char[] passwordArray = passwordField.getPassword();
+        String password = passwordArray.toString();
 
+        if(username != null && password != null){
+            while(true){
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+                Message[] messages = Client.getMsg(username, password, currentTime.getTime());
+
+                Document doc = recvMessagePane.getDocument();
+
+                if(messages != null){
+                    for(Message msg : messages){
+                        try {
+                            doc.insertString(doc.getLength(),msg.getContent().toString() + "\n",null);
+                        } catch (BadLocationException ble) {
+                            ble.printStackTrace();
+                        }
+                    }
+                }
+            }//end while loop
+        }
     }
 }
 
