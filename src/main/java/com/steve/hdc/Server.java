@@ -1,6 +1,10 @@
 package com.steve.hdc;
 
 import express.Express;
+import org.json.JSONObject;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentHashMap;          //For User/Pass data.
 import java.io.*;
 
@@ -37,6 +41,40 @@ public class Server {
         //      As it is, we have to serialize the users hashmap, write it to local
         //      disk, then call createFile to write it to hdfs. Then remove it from
         //      The local filesystem.
+
+        //filepaths
+        //CHECK THESE PATHS
+        String local = "localfiles/users";
+        String hdfs = "hdfsfiles/users";
+
+        //serialize user hashmap
+        JSONObject obj = new JSONObject();
+
+        for(String user : users.keySet()){
+            obj.put(user, users.get(user));
+        }
+
+        //write to disk
+        try {
+            Files.writeString(Paths.get(local), obj.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //send to hdfs
+        //MIGHT NEED TO CHANGE TO APPEND
+        DataManager.createFile(local, hdfs);
+
+        //remove from disk
+        File fileToDelete = new File(local);
+        if(fileToDelete.delete())
+        {
+            System.err.println("File deleted");
+        }
+        else
+        {
+            System.out.println("File NOT deleted");
+        }
     }
 
 

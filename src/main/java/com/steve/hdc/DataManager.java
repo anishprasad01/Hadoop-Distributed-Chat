@@ -38,6 +38,7 @@ public class DataManager{
 //TEMP
         return true;
     }
+
     public static boolean createFile(String local, String hdfs){
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –put " + local + " " + hdfs);

@@ -4,6 +4,7 @@
     <list default="true" id="e7e4046d-b60e-4109-ae4f-f12e2fa12d10" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/DataManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/steve/hdc/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
