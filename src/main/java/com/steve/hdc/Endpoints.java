@@ -1,35 +1,35 @@
 package com.steve.hdc;
 
-import java.io.*;                           //For Streams.
-import java.util.*;                         //For Scanner.
-import org.json.JSONObject ;                //For JSON parsing.
-
 import express.DynExpress;
 import express.http.RequestMethod;
 import express.http.request.Request;
 import express.http.response.Response;
 import express.utils.Status;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Scanner;
 
 /**
- *  A class which handles the communication from the server to the clients.
- *  It handles requests/responses and provides an easy API to use for
- *  the client to connect to. The client can send messages, signup, recieve
- *  messages, and files from the server. These are based on agreed transfer
- *  protocols between the client and the server.
- *  TODO: Add basic HTTP authentication support.
+ * A class which handles the communication from the server to the clients.
+ * It handles requests/responses and provides an easy API to use for
+ * the client to connect to. The client can send messages, signup, recieve
+ * messages, and files from the server. These are based on agreed transfer
+ * protocols between the client and the server.
+ * TODO: Add basic HTTP authentication support.
  *
- *  @author Ardalan Ahanchi
- *  @version 0.1
+ * @author Ardalan Ahanchi
+ * @version 0.1
  */
 public class Endpoints {
 
 
-
     /**
-     *  The default (Root directory) endpoint, which just prints the program name.
+     * The default (Root directory) endpoint, which just prints the program name.
      *
-     *  @param req The HTTP request Object.
-     *  @param res The HTTP response Object.
+     * @param req The HTTP request Object.
+     * @param res The HTTP response Object.
      */
     @DynExpress() // Default is context="/"
     public void getDefault(Request req, Response res) {
@@ -37,14 +37,13 @@ public class Endpoints {
     }
 
 
-
     /**
-     *  The signup endpoint, which creates a new user. It is passed a username,
-     *  and password for creating the user. It communicates with the client with
-     *  the agreed upon protocol.
+     * The signup endpoint, which creates a new user. It is passed a username,
+     * and password for creating the user. It communicates with the client with
+     * the agreed upon protocol.
      *
-     *  @param req The HTTP request Object.
-     *  @param res The HTTP response Object.
+     * @param req The HTTP request Object.
+     * @param res The HTTP response Object.
      */
     @DynExpress(context = "/signup", method = RequestMethod.POST)
     public void signup(Request req, Response res) {
@@ -61,21 +60,21 @@ public class Endpoints {
         String pass = (String) obj.get("pass");
 
         //Check if Username is invalid.
-        if(! Server.signupCheckUser(user)) {
+        if (!Server.signupCheckUser(user)) {
             res.setStatus(Status._409);                     //Code: Conflict
             res.send();                                     //Send response back.
             return;
         }
 
         //Check if Password is invalid.
-        if(! Server.signupCheckPass(pass)) {
+        if (!Server.signupCheckPass(pass)) {
             res.setStatus(Status._409);                     //Code: Not Acceptable
             res.send();                                     //Send response back.
             return;
         }
 
         //Create the user, and check it's status.
-        if(! Server.signup(user, pass)) {
+        if (!Server.signup(user, pass)) {
             res.setStatus(Status._400);                     //Code: Bad Request
             res.send();                                     //Send response back.
             return;
@@ -84,6 +83,7 @@ public class Endpoints {
         //If we get here everythin wen't according to the plan.
         System.err.println("Server: New user requested, user=" + user + " pass=" + pass);
 
+//        System.out.println("Users is: " + Server.getUsers());
         //Send success response
         res.setStatus(Status._201);                         //Code: Successfully Created
 
@@ -92,31 +92,33 @@ public class Endpoints {
     }
 
 
-
     /**
-     *  The send endpoint, is used by the clients to send messages. It is passed
-     *  a JSON object (Message serialized). It reads it and routes it to the right
-     *  recipient. It communicates with the client with the agreed upon protocol.
-     *  TODO: Get user/pass from basic Auth.
+     * The send endpoint, is used by the clients to send messages. It is passed
+     * a JSON object (Message serialized). It reads it and routes it to the right
+     * recipient. It communicates with the client with the agreed upon protocol.
+     * TODO: Get user/pass from basic Auth.
      *
-     *  @param req The HTTP request Object.
-     *  @param res The HTTP response Object.
+     * @param req The HTTP request Object.
+     * @param res The HTTP response Object.
      */
     @DynExpress(context = "/send", method = RequestMethod.POST)
-    public void sendMsg(Request req, Response res){
+    public void sendMsg(Request req, Response res) {
         System.err.println("Server: Message sent from client " + req.getIp());
+
 
         //Get the body of the request, convert it to a string for parsing.
         InputStream stream = req.getBody();
         Scanner s = new Scanner(stream).useDelimiter("\\A");
         String body = s.hasNext() ? s.next() : "";
 
-        //TODO: Retrieve User/Pass from simple AUTH.
-        String user = "SampleUser";
-        String pass = "SamplePassHash";
+        //Get Authorization Info
+        List authHeader = req.getHeader("Authorization");
+        String[] authArray = Server.getAuthInfo(authHeader);
+        String user = authArray[0];
+        String pass = authArray[1];
 
         //Check if authentication is unsuccessful.
-        if(! Server.auth(user, pass)) {
+        if (!Server.auth(user, pass)) {
             res.setStatus(Status._403);                     //Code: Forbidden
             res.send();                                     //Send response back.
             return;
@@ -126,7 +128,7 @@ public class Endpoints {
         Message msg = new Message(body);
 
         //Check if the recipient exists (is a valid user), and the sender
-        if(Server.userExists(msg.getReciever()) && msg.getSender().equals(user)) {
+        if (Server.userExists(msg.getReciever()) && msg.getSender().equals(user)) {
             Server.route(msg);          //Route the message to the right user/s.
         } else {
             //If the message is not acceptable (sender/recipient are invalid).
@@ -144,27 +146,28 @@ public class Endpoints {
     }
 
 
-
     /**
-     *  The recieve endpoint, is used by the clients to read messages. It is passed
-     *  a timestamp. It groups all the messagaes from that timestamp into a JSON
-     *  text, and sends it over to the client.  It communicates with the client
-     *  with the agreed upon protocol.
-     *  TODO: Get user/pass from basic Auth.
+     * The recieve endpoint, is used by the clients to read messages. It is passed
+     * a timestamp. It groups all the messagaes from that timestamp into a JSON
+     * text, and sends it over to the client.  It communicates with the client
+     * with the agreed upon protocol.
+     * TODO: Get user/pass from basic Auth.
      *
-     *  @param req The HTTP request Object.
-     *  @param res The HTTP response Object.
+     * @param req The HTTP request Object.
+     * @param res The HTTP response Object.
      */
     @DynExpress(context = "/recieve")
     public void getMsg(Request req, Response res) {
         System.err.println("Server: Recieve Message requested from client " + req.getIp());
 
-        //TODO: Retrieve User/Pass from simple AUTH.
-        String user = "SampleUser";
-        String pass = "SamplePassHash";
+        //Get Authorization Info
+        List authHeader = req.getHeader("Authorization");
+        String[] authArray = Server.getAuthInfo(authHeader);
+        String user = authArray[0];
+        String pass = authArray[1];
 
         //Check if authentication is unsuccessful.
-        if(! Server.auth(user, pass)) {
+        if (!Server.auth(user, pass)) {
             res.setStatus(Status._403);                     //Code: Forbidden
             res.send();                                     //Send response back.
             return;
@@ -182,30 +185,31 @@ public class Endpoints {
     }
 
 
-
     /**
-     *  The file recieve endpoint, is used by the clients to read file messages.
-     *  It is passed a filename. It reads the message into a JSON string and
-     *  sends it over to the client.  It communicates with the client
-     *  with the agreed upon protocol.
-     *  TODO: Get user/pass from basic Auth.
+     * The file recieve endpoint, is used by the clients to read file messages.
+     * It is passed a filename. It reads the message into a JSON string and
+     * sends it over to the client.  It communicates with the client
+     * with the agreed upon protocol.
+     * TODO: Get user/pass from basic Auth.
      *
-     *  @param req The HTTP request Object.
-     *  @param res The HTTP response Object.
+     * @param req The HTTP request Object.
+     * @param res The HTTP response Object.
      */
     @DynExpress(context = "/file")
-    public void getFile(Request req, Response res){
+    public void getFile(Request req, Response res) {
         System.err.println("Server: File requested from client " + req.getIp());
 
         //Get the filename parameter from the request.
         String fileName = (String) req.getHeader("File-Name").get(0);
 
-        //TODO: Retrieve User/Pass from simple AUTH.
-        String user = "SampleUser";
-        String pass = "SamplePassHash";
+        //Get Authorization Info
+        List authHeader = req.getHeader("Authorization");
+        String[] authArray = Server.getAuthInfo(authHeader);
+        String user = authArray[0];
+        String pass = authArray[1];
 
         //Check if authentication is unsuccessful.
-        if(! Server.auth(user, pass)) {
+        if (!Server.auth(user, pass)) {
             res.setStatus(Status._403);                     //Code: Forbidden
             res.send();                                     //Send response back.
             return;
@@ -215,7 +219,7 @@ public class Endpoints {
         Message file = Server.getFile(user, fileName);
 
         //Check if file doesn't exist.
-        if(file == null) {
+        if (file == null) {
             res.setStatus(Status._404);                     //Code: Not Found.
             res.send();                                     //Send response back.
             return;
