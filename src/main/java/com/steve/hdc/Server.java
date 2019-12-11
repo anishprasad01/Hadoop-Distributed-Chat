@@ -3,7 +3,7 @@ package com.steve.hdc;
 import express.Express;
 import org.json.JSONObject;
 import java.nio.file.Files;
-import java.nio.file.Paths;    
+import java.nio.file.Paths;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Base64;
@@ -54,8 +54,8 @@ public class Server {
 
         //filepaths
         //CHECK THESE PATHS
-        String local = "localfiles/users";
-        String hdfs = "hdfsfiles/users";
+        String local = "users";
+        String hdfs = "users";
 
         //serialize user hashmap
         JSONObject obj = new JSONObject();
@@ -118,71 +118,140 @@ public class Server {
         }
     }
 
-    //TODO: Implement.
-    //Retrieve the messages from the server for the given user.
-    public static MessageList getMessages(String user, long time) {
-        MessageList testList = new MessageList();
-        testList.add(new Message("B", "A", "Test Message 1"));
-        testList.add(new Message("C", "A", "Test Message 2"));
-        testList.add(new Message("D", "A", "Test Message 2"));
-        return testList;
-    }
 
-    //TODO: Implement.
-    //Retrieve a file from the server and send it to the user.
-    public static Message getFile(String user, String fileName) {
-        return new Message("a", "b", "c");
+    /**
+     *  A function which retrieves all the messages for a user from the hadoop
+     *  instance. It gets a list of the files, compares their timestamps,
+     *  and if it matches the request, it adds them to a list and returns it.
+     *  TODO: Make it more efficient by not writing it to local storage (Optional).
+     *
+     *  @param user The username for the current user.
+     *  @param time The starting timestamp (Epoch time) for the first message.
+     *  @return A MessageList which contains all the messages retrieved.
+     */
+    public static MessageList getMessages(String user, long time) {
+        //List of messages which will be sent back to user.
+        MessageList msgs = new MessageList();
+
+        //Get the list of files for the user.
+        ArrayList<String> files = DataManager.fileList(user);
+
+        //Go through all the files, and remove the ones before the time, and file types.
+        //File types are the ones that include an extension.
+        for(int i = 0; i < files.size(); i++) {
+            String fileName = files.get(i);
+
+            //Get the timestamp from the fileName.
+            long timestamp = 0;
+            try {
+                timestamp = Long.parseLong(fileName.split("_")[0]);
+            } catch (Exception e) {
+                System.err.println("Server: Error: Invalid file name " + fileName);
+                return msgs;
+            }
+
+            //If the timestamp matches the right time, and
+            //If the message is not a file (Does not have an extension), save it.
+            if(timestamp >= time && !fileName.contains(".")) {
+                //Read the message file from hdfs into the local directory.
+                DataManager.readFile(user + "/" + fileName, fileName);
+
+                //Initialize the new message based on the serialized file.
+                Message newMsg = new Message(fileName, true);
+
+                //Add the message to the list of messages.
+                msgs.add(newMsg);
+            }
+        }
+
+        return msgs;
     }
 
 
     /**
-     * A function which adds a user to the list of users (signs them up).
-     * and creates a folder for their data in the Hadoop cluster.
+     *  A function which retrieves a requested file for the user from the hadoop
+     *  instance. The file is NOT the placeholder, and it is the actual contents
+     *  of the file. The fileName should match the the data stored in the content
+     *  variable of the placeholder file.
+     *  TODO: Make it more efficient by not writing it to local storage (Optional).
      *
-     * @param user The username which the user is trying to sign-up as.
-     * @param pass The corresponding password (or hash of it) for that username.
+     *  @param user The username for the current user.
+     *  @param fileName The name of the file which we're trying to read.
+     *  @return A Message with the contents of the file.
+     */
+    public static Message getFile(String user, String fileName) {
+        //The file which we're sending back.
+        Message file = null;
+
+        //Get the list of files for the user.
+        ArrayList<String> files = DataManager.fileList(user);
+
+        //Go through all the files, and check if we can find the file requested.
+        for(int i = 0; i < files.size(); i++) {
+            String currFileName = files.get(i);
+
+            //If we find the file, read it and save it to the object.
+            if(currFileName.equals(fileName)) {
+                //Read the message file from hdfs into the local directory.
+                DataManager.readFile(user + "/" + fileName, fileName);
+
+                //Initialize the new message based on the serialized file.
+                file = new Message(fileName, true);
+            }
+        }
+
+        return file;                //Return the file to the user.
+    }
+
+
+    /**
+     *  A function which adds a user to the list of users (signs them up).
+     *  and creates a folder for their data in the Hadoop cluster.
+     *
+     *  @param user The username which the user is trying to sign-up as.
+     *  @param pass The corresponding password (or hash of it) for that username.
      */
     public static boolean signup(String user, String pass) {
         //Check if this username is already used.
-        if (Server.userExists(user)) {
+        if(Server.userExists(user)) {
             System.err.println("Server: Error: Signup error, user already exists.");
             return false;
         }
 
         //Create a folder for this user.
-//        DataManager.createFolder(user);
+        DataManager.createFolder(user);
 
         //If not, add the user to the users database.
         users.put(user, pass);
-        if (users.containsKey(user)) {
-            System.out.println("User added success");
-        }
 
         //Synchronize the database to the file system.
         Server.sync();
 
-        //TEMP, IMPLEMENT PROPER LOGIC
-
-        // ********* return true just to get working ***************
+        //If we reach here, signup was successful.
         return true;
     }
 
 
     /**
-     * A function which checks the username which the user has requested to
-     * sign up with. It checks if it exists, and if the username is valid.
+     *  A function which checks the username which the user has requested to
+     *  sign up with. It checks if it exists, and if the username is valid.
      *
-     * @param user The username which we're signing up with.
-     * @return True if username is valid, false otherwise.
+     *  @param user The username which we're signing up with.
+     *  @return True if username is valid, false otherwise.
      */
     public static boolean signupCheckUser(String user) {
         //If the user is already signed up, return false.
-        if (Server.userExists(user)) {
+        if(Server.userExists(user)) {
             return false;
         }
 
         //If the username is too short, return false.
-        if (user.length() < MIN_CHARACTERS_USER) {
+        if(user.length() <  MIN_CHARACTERS_USER) {
+            return false;
+        }
+
+        //If username inclues an underline or space.
+        if(user.contains("_") || user.contains(" ")) {
             return false;
         }
 
@@ -274,7 +343,7 @@ public class Server {
 
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");
-        Client.sendMsg("Ardalan", "testpassword", toSend);
+        Client.sendMsg("MyUser", "MyPass", toSend);
 
         //Sample to get the list of messages from timestamp 1 (!)
         Message[] messages = Client.getMsg("Ardalan", "testpassword", 1);

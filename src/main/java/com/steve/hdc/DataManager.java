@@ -63,7 +63,7 @@ public class DataManager{
         return true;
     }
 
-    public static Message readFile(String filename, String local, String hdfs) throws IOException {
+    public static Message readFile(String local, String hdfs) throws IOException {
         try{
             Process p = Runtime.getRuntime().exec("hdfs dfs –copyToLocal " + hdfs + " " + local);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
