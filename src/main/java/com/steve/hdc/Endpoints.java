@@ -120,6 +120,8 @@ public class Endpoints {
         String user = authArray[0];
         String pass = authArray[1];
 
+        System.err.println("USER: " + user + "PASS" + pass);
+
         //Check if authentication is unsuccessful.
         if (!Server.auth(user, pass)) {
             res.setStatus(Status._403);                     //Code: Forbidden

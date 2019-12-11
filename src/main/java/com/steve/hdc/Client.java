@@ -351,7 +351,8 @@ public class Client {
     }
 
     private static String credentials(String user, String pass) {
-        String userCredentials = user + " " + pass;
-        return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+        String userCredentials = user + "_" + pass;
+        return userCredentials;
+        //return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
     }
 }

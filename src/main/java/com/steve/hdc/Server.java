@@ -31,6 +31,7 @@ public class Server {
     //Start the server (Listen to clients).
     public static void init() {
         //Initialize the user's hashmap.
+        DataManager.createFolder("HDFS_DATA");
 
         //TODO: Check if serialized users file is found on server root.
         //      If it is, read it into the users hashmap.
@@ -75,7 +76,7 @@ public class Server {
         DataManager.createFile(local, hdfs);
 
         //remove from disk
-        File fileToDelete = new File(local);
+        /*File fileToDelete = new File(local);
         if(fileToDelete.delete())
         {
             System.err.println("File deleted");
@@ -83,7 +84,7 @@ public class Server {
         else
         {
             System.out.println("File NOT deleted");
-        }
+        }*/
     }
 
 
@@ -322,11 +323,12 @@ public class Server {
 
     public static String[] getAuthInfo(List authHeader) {
         String authString = Arrays.toString(authHeader.toArray());
-        int left = authString.indexOf("c");
+        /*int left = authString.indexOf("c");
         int right = authString.indexOf("]");
         String authInfo = authString.substring(left + 2, right);
         String decodedAuth = new String(Base64.getDecoder().decode(authInfo.getBytes()));
-        return decodedAuth.split(" ");
+        return decodedAuth.split(" "); */
+        return authString.split("_");
     }
 
     public static void main(String[] args) {
