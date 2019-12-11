@@ -5,9 +5,8 @@ import org.json.JSONObject;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
+import java.lang.*;
 import java.util.concurrent.ConcurrentHashMap;   //For User/Pass data.
 
 public class Server {
