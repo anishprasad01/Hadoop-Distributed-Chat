@@ -109,13 +109,13 @@ public class Server {
         //Write the messages to HDFS for both the client and the server.
         DataManager.createFile(fileName, recieverPath);
         DataManager.createFile(fileName, senderPath);
-
+        /*
         //Remove the local copy of the message.
         File file = new File(fileName);
 
         if (!file.delete()) {
             System.err.println("Server: Error: Can't delete file from local storage");
-        }
+        }*/
     }
 
 
@@ -323,12 +323,11 @@ public class Server {
 
     public static String[] getAuthInfo(List authHeader) {
         String authString = Arrays.toString(authHeader.toArray());
-        /*int left = authString.indexOf("c");
+        int left = authString.indexOf("c");
         int right = authString.indexOf("]");
         String authInfo = authString.substring(left + 2, right);
         String decodedAuth = new String(Base64.getDecoder().decode(authInfo.getBytes()));
-        return decodedAuth.split(" "); */
-        return authString.split("_");
+        return decodedAuth.split(" ");
     }
 
     public static void main(String[] args) {
@@ -343,10 +342,12 @@ public class Server {
 
         //Sample on how to sign up.
         Client.signup("Ardalan", "testpassword");
+        Message toSend = new Message("Ardalan", "Ardalan", "Message text");
+        Client.sendMsg("Ardalan", "testpassword", toSend);
 /*
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");
-        Client.sendMsg("MyUser", "MyPass", toSend);
+        Client.sendMsg("MyUser", "Ardalan", testpassword);
 
         //Sample to get the list of messages from timestamp 1 (!)
         Message[] messages = Client.getMsg("Ardalan", "testpassword", 1);

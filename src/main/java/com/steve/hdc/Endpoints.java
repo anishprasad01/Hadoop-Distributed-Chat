@@ -108,7 +108,6 @@ public class Endpoints {
     public void sendMsg(Request req, Response res) {
         System.err.println("Server: Message sent from client " + req.getIp());
 
-
         //Get the body of the request, convert it to a string for parsing.
         InputStream stream = req.getBody();
         Scanner s = new Scanner(stream).useDelimiter("\\A");

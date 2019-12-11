@@ -121,11 +121,15 @@ public class Client {
             URL url = new URL("http://" + ADDRESS + "/send");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
+            System.err.println("Client: test 1");
+
             // set the request method and properties.
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
             con.setRequestProperty("Authorization", basicAuth);
+
+            System.err.println("Client: test 2");
 
             // Send post request and write the JSON data from the message.
             con.setDoOutput(true);
@@ -134,8 +138,12 @@ public class Client {
             wr.flush();
             wr.close();
 
+            System.err.println("Client: test 3");
+
             //Get the response code and check if it was successful.
             Integer response = con.getResponseCode();
+
+            System.err.println("Client: test 4");
             switch (response) {
                 //When sending was successfully accomplished.
                 case 201:
@@ -351,8 +359,8 @@ public class Client {
     }
 
     private static String credentials(String user, String pass) {
-        String userCredentials = user + "_" + pass;
-        return userCredentials;
-        //return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+        String userCredentials = user + " " + pass;
+        //return userCredentials;
+        return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
     }
 }
