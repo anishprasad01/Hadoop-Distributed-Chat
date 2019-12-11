@@ -217,6 +217,8 @@ public class Server {
             return false;
         }
 
+        System.err.println("I do get herre ???? 5");
+
         //Create a folder for this user.
         DataManager.createFolder(user);
 
@@ -339,7 +341,7 @@ public class Server {
 
         //Sample on how to sign up.
         Client.signup("Ardalan", "testpassword");
-
+/*
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");
         Client.sendMsg("MyUser", "MyPass", toSend);
@@ -353,10 +355,10 @@ public class Server {
         } else {
             System.err.println("No messages!!!");
         }
-
+*/
 
         //Sample to get a file from the server (Name should be the content of placeholder).
-        Message testfile = Client.getFile("Ardalan", "testpassword", "SampleFile.txt");
+        //Message testfile = Client.getFile("Ardalan", "testpassword", "SampleFile.txt");
 
     }
 }

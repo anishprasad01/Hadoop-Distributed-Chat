@@ -59,6 +59,7 @@ public class Endpoints {
         String user = (String) obj.get("user");
         String pass = (String) obj.get("pass");
 
+
         //Check if Username is invalid.
         if (!Server.signupCheckUser(user)) {
             res.setStatus(Status._409);                     //Code: Conflict
@@ -79,6 +80,8 @@ public class Endpoints {
             res.send();                                     //Send response back.
             return;
         }
+
+        System.err.println("I do get herre ????");
 
         //If we get here everythin wen't according to the plan.
         System.err.println("Server: New user requested, user=" + user + " pass=" + pass);

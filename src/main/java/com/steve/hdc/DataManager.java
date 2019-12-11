@@ -12,26 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataManager{
-    static{
-        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
-    }
+
     public static boolean createFolder(String foldername){
         try{
             Process p = Runtime.getRuntime().exec("mkdir HDFS_DATA/" + foldername);
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            //read the output from the command
-            String s = stdInput.readLine();
-            while(s != null){
-                System.out.println(s);
-            }
-            //read any errors from the attempted command
-            String s1 = stdError.readLine();
-            while(s1 != null){
-                System.out.println(s1);
-            }
-
-        } catch(IOException e){
+        } catch(Exception e){
             e.printStackTrace();
             return false;
         }
@@ -42,20 +27,8 @@ public class DataManager{
     public static boolean createFile(String local, String hdfs){
         try{
             Process p = Runtime.getRuntime().exec("cp  " + local + " ./HDFS_DATA/" + hdfs);
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            // read the output from the command
-            String s = stdInput.readLine();
-            while (s != null) {
-                System.out.println(s);
-            }
-            // read any errors from the attempted command
-            String s1 = stdError.readLine();
-            while (s1 != null) {
-                System.out.println(s1);
-            }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -66,19 +39,6 @@ public class DataManager{
     public static Message readFile(String local, String hdfs){
         try{
             Process p = Runtime.getRuntime().exec("cp ./HDFS_DATA/" + hdfs + " ./" + local);
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            // read the output from the command
-            String s = stdInput.readLine();
-            while (s != null) {
-                System.out.println(s);
-            }
-            // read any errors from the attempted command
-            String s1 = stdError.readLine();
-            while (s1 != null) {
-                System.out.println(s1);
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
