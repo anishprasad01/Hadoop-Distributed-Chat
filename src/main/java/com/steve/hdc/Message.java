@@ -339,4 +339,14 @@ public class Message implements Serializable {
     }
 
 
+    /**
+     *  A getter which returns the message's text content as a string.
+     *
+     *  @return A string which represents the message text.
+     */
+    public String getMessage() {
+        return new String(this.content, Charset.forName("UTF-8"));
+    }
+
+
 }
