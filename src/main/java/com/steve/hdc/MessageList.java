@@ -95,7 +95,7 @@ public class MessageList {
     public Message[] toArray() {
         Message[] msgArr = new Message[list.size()];
         for(int i = 0; i < list.size(); i++) {
-            msgArr[i] = new Message(list.get(i));
+            msgArr[i] = new Message(list.get(Integer.valueOf(i)));
         }
         return msgArr;
     }

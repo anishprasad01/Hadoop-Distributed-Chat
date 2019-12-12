@@ -1,5 +1,7 @@
 package com.steve.hdc;
 
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -18,6 +20,7 @@ public class ClientGui {
     private JButton signUpButton;
     private JButton getFileButton;
     private JTextField fileNameField;
+    private JButton recieveButton;
 
     public ClientGui(){
         sendButton.addActionListener(new ActionListener() {
@@ -29,19 +32,20 @@ public class ClientGui {
                 String recipient = recipientField.getText();
                 String toTextBox = null;
 
-                String response = Client.sendMsg(username, password, new Message(username, recipient, sendMessageBox.getText()));
+                String response = null;
+
+                try{
+                    response = Client.sendMsg(username, password, new Message(username, recipient, sendMessageBox.getText()));
+                }
+                catch (Exception ex){
+                    System.err.println(ex);
+                }
 
                 if(response == null){
                     toTextBox = username + ": " + sendMessageBox.getText();
                 }
-                else if(response.equals("Invalid Username/Password.")){
-                    toTextBox = "Please Check your Username and Password";
-                }
-                else if(response.equals("Invalid Sender/Recipient.")){
-                    toTextBox = "Unknown Recipient";
-                }
                 else{
-                    toTextBox = "Something went wrong. Please try again later.";
+                    toTextBox = response;
                 }
 
                 Document doc = recvMessagePane.getDocument();
@@ -113,6 +117,34 @@ public class ClientGui {
                 }
             }
         });
+
+        recieveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                char[] passwordArray = passwordField.getPassword();
+                String password = passwordArray.toString();
+
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
+                Message[] messages = Client.getMsg(username, password, currentTime.getTime());
+
+                Document doc = recvMessagePane.getDocument();
+
+                if(messages != null){
+                    for(Message msg : messages){
+                        try {
+                            System.out.println(msg.toJSON());
+                            JSONObject obj = new JSONObject(msg.toJSON());
+                            String toInsert = obj.getString("reciever") + ": " + obj.get("content");
+                            doc.insertString(doc.getLength(),toInsert + "\n",null);
+                        } catch (BadLocationException ble) {
+                            ble.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
         //getMessages();
     }
 
@@ -145,6 +177,11 @@ public class ClientGui {
                             ble.printStackTrace();
                         }
                     }
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }//end while loop
         }
