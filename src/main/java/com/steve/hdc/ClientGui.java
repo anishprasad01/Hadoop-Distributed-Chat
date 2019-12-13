@@ -7,6 +7,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 public class ClientGui {
@@ -184,7 +186,18 @@ public class ClientGui {
 
                 Message response = Client.getFile(username, password, filename);
 
+                System.out.println("RESPONSE************" + response);
+
                 response.toDisk();
+
+                String toTextBox = response.getMessage();
+
+                Document doc = recvMessagePane.getDocument();
+                try {
+                    doc.insertString(doc.getLength(), toTextBox + "\n", null);
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -200,7 +213,7 @@ public class ClientGui {
 
                 String response = null;
 
-                System.out.println("PATH:" + filepath + ":END PATH");
+                System.out.println("EXISTS****************" + Files.exists(Paths.get(filepath)));
 
                 if(filepath.equals("")){
                     toTextBox = "Please specify a file path";
