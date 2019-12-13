@@ -1,8 +1,5 @@
 package com.steve.hdc;
 
-import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
-import org.apache.hadoop.io.IOUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,68 +10,97 @@ import java.util.List;
 
 public class DataManager{
 
-    public static boolean createFolder(String foldername){
+    public static final String ROOT_NAME = "HDFS_DATA";
+
+    //A function to execute a given set of arguments.
+    private static boolean exec(String args) {
         try{
-            Process p = Runtime.getRuntime().exec("mkdir HDFS_DATA/" + foldername);
+            //Execute the commands.
+            Process p = Runtime.getRuntime().exec(args);
+
+            //Wait for the process to finish.
+            p.waitFor();
         } catch(Exception e){
             e.printStackTrace();
             return false;
         }
-//TEMP
+
         return true;
     }
 
-    public static boolean createFile(String local, String hdfs){
-        try{
-            Process p = Runtime.getRuntime().exec("cp  " + local + " ./HDFS_DATA/" + hdfs);
+    //Create a root directory. TODO: Initialize it if it exists.
+    public static void init() {
+        exec("mkdir " + ROOT_NAME);
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    //Create a folder in the root directory by the given name.
+    public static boolean createFolder(String foldername){
+        return exec("mkdir " + ROOT_NAME + "/" + foldername);
+    }
+
+
+    //Copy a file from the local directory to the remote..
+    public static boolean pushFile(String local, String hdfs){
+        return exec("cp " + local + " " + ROOT_NAME + "/" + hdfs);
+    }
+
+    //Pushes a file and also removes the local copy.
+    public static boolean pushFile(String local, String hdfs, boolean rm){
+        //Remove the file if the move was successful.
+        if(pushFile(local, hdfs)) {
+            rmLocalFile(local);
+            return true;
         }
-    //TEMP
-        return true;
+
+        //If we get here it was unsuccesful.
+        return false;
     }
 
+    //Copy a file from the remote directory into the local.
+    public static boolean pullFile(String hdfs, String local){
+        return exec("cp  " + ROOT_NAME + "/" + hdfs + " " + local);
+    }
+
+
+    //Read a file from the Root name directory and send it back as a message.
     public static Message readFile(String local, String hdfs){
-        try{
-            Process p = Runtime.getRuntime().exec("cp ./HDFS_DATA/" + hdfs + " ./" + local);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new Message(local, true);
+        exec("cp " + ROOT_NAME + "/" +  hdfs + " " + local);
+        Message msg = new Message(local, true);
+        rmLocalFile(local);
+        return msg;
     }
 
+    //Remove a file from the local directory.
+    public static void rmLocalFile(String filename) {
+        //Remove the local copy of the message.
+        exec("rm " + filename);
+    }
+
+    //Return an arraylist of files.
     public static ArrayList<String> fileList(String filename){
         ArrayList<String> arr = new ArrayList<String> ();
+
         try{
-            Process p = Runtime.getRuntime().exec("ls ./HDFS_DATA/" + filename);
+            //List all the files, while changing their names
+            Process p = Runtime.getRuntime().exec("ls " + ROOT_NAME + "/" + filename + "/ | tr \"\t\" \"\n\"");
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            //read the output from the command
-            // -rw-r--r--   3 pansyng_css534 supergroup        111 2019-12-07 18:46 /user/pansyng_css534/input/center.txt
-            String s = stdInput.readLine();
-            while(s != null){
-                String[] pline = s.split(":");
-                if(pline.length == 2){
-                    String [] pline1 = pline[1].split(" ");
-                    if(pline1.length == 2){
-                        arr.add(pline1[1]);
-                    }
-                }
 
-            }
-            //read any errors from the attempted command
-            String s1 = stdError.readLine();
-            while(s1 != null){
-                System.out.println(s);
+            //Read every line of the std output and save it to array.
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                arr.add(s);
             }
 
-        } catch(IOException e){
+            //Remove the head of array since it's the command executed.
+            arr.remove(0);
+
+            //Wait till the execution is complete.
+            p.waitFor();
+
+        } catch(Exception e){
             e.printStackTrace();
         }
-        return arr;
 
+        return arr;
     }
 }

@@ -115,21 +115,16 @@ public class Client {
     public static String sendMsg(String user, String pass, Message msg) {
         //For holding the results for the message sending.
         String result = null;
-        String basicAuth = credentials(user, pass);
         try {
             //Establish a HTTP connection.
             URL url = new URL("http://" + ADDRESS + "/send");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-            System.err.println("Client: test 1");
-
             // set the request method and properties.
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("Authorization", basicAuth);
-
-            System.err.println("Client: test 2");
+            con.setRequestProperty("Auth", credentials(user, pass));
 
             // Send post request and write the JSON data from the message.
             con.setDoOutput(true);
@@ -138,12 +133,9 @@ public class Client {
             wr.flush();
             wr.close();
 
-            System.err.println("Client: test 3");
-
             //Get the response code and check if it was successful.
             Integer response = con.getResponseCode();
 
-            System.err.println("Client: test 4");
             switch (response) {
                 //When sending was successfully accomplished.
                 case 201:
@@ -197,7 +189,6 @@ public class Client {
     public static Message[] getMsg(String user, String pass, long timeFrom) {
         //Used to store the list of messages recieved from the server.
         MessageList msgList = new MessageList();
-        String basicAuth = credentials(user, pass);
 
         try {
             URL url = new URL("http://" + ADDRESS + "/recieve");
@@ -207,7 +198,7 @@ public class Client {
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("Authorization", basicAuth);
+            con.setRequestProperty("Auth", credentials(user, pass));
 
             //Save the time as a property.
             con.setRequestProperty("Time-From", String.valueOf(timeFrom));
@@ -231,8 +222,6 @@ public class Client {
                     while ((output = in.readLine()) != null) {
                         data.append(output);
                     }
-
-                    System.out.println(data.toString());
 
                     //Parse the JSON into a list of messages.
                     msgList = new MessageList(data.toString());
@@ -289,13 +278,11 @@ public class Client {
             URL url = new URL("http://" + ADDRESS + "/file");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-            String basicAuth = credentials(user, pass);
-
             // set the request method and properties.
             con.setRequestMethod("GET");
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Accept", "application/json");
-            con.setRequestProperty("Authorization", basicAuth);
+            con.setRequestProperty("Auth", credentials(user, pass));
 
             //Save the file name as a property.
             con.setRequestProperty("File-Name", fileName);
@@ -321,8 +308,6 @@ public class Client {
                     while ((output = in.readLine()) != null) {
                         data.append(output);
                     }
-
-                    System.out.println(data.toString());
 
                     //Parse the JSON into the message (File).
                     file = new Message(data.toString());
@@ -358,9 +343,17 @@ public class Client {
         return file;                //Return the file message.
     }
 
+
+    /**
+     *  A function which attaches the username and password together to create
+     *  a single string. This string will be parsed on the server side to provide
+     *  a basic authentication method.
+     *
+     *  @param user The user's username.
+     *  @param pass The user's password.
+     *  @return The username and password concatinated together.
+     */
     private static String credentials(String user, String pass) {
-        String userCredentials = user + " " + pass;
-        //return userCredentials;
-        return "Basic " + new String(Base64.getEncoder().encode(userCredentials.getBytes()));
+        return user + "_" + pass;
     }
 }
