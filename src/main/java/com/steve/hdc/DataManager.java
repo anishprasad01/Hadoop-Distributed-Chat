@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DataManager{
-    public static final String DEFAULT_FILE_SYSTEM = ""
+    public static final String DEFAULT_FILE_SYSTEM = "";
+    public
     public static boolean createFolder(String foldername, Configuration conf) throws IOException{
         FileSystem fs = FileSystem.get(conf);
         Path path = new Path(foldername);
