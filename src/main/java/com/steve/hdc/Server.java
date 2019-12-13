@@ -59,7 +59,7 @@ public class Server {
 
         //write to disk
         try {
-            Files.writeString(Paths.get(local), obj.toString());
+            Files.write( Paths.get(local),  obj.toString().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
