@@ -163,6 +163,20 @@ public class ClientGui {
                 }
             }
         });
+
+        getFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                char[] passwordArray = passwordField.getPassword();
+                String password = passwordArray.toString();
+                String filename = fileNameField.getText();
+
+                Message response = Client.getFile(username, password, filename);
+
+                response.toDisk();
+            }
+        });
     }
 
     public static void main(String[] args) {
