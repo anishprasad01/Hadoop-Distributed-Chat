@@ -99,12 +99,13 @@ public class DataManager{
 
 
 
-    public static List<Path> fileList(Path directory) throws IOException{
+    public static List<Path> fileList(String dstr) throws IOException{
+        Path directory = new Path(dstr);
         Configuration conf = new Configuration(); 
         conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         List<Path> arr = new ArrayList<String> ();
         FileSystem fs = FileSystem.get(conf);
-        RemoteIterator<LocatedFileStatus> i = fs.listFiles(path, true);
+        RemoteIterator<LocatedFileStatus> i = fs.listFiles(directory, true);
         while(i.hasNext()){
             LocatedFileStatus fileStatus = i.next();
             Path p = fileStatus.getPath();
