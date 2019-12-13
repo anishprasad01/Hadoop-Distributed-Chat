@@ -207,13 +207,13 @@ public class ClientGui {
                 }
                 else{
                     response = Client.sendMsg(username, password, new Message(username, recipient, filepath, true));
-                }
 
-                if(response == null){
-                    toTextBox = "File sent";
-                }
-                else {
-                    toTextBox = response;
+                    if(response == null){
+                        toTextBox = "File sent";
+                    }
+                    else {
+                        toTextBox = response;
+                    }
                 }
 
                 Document doc = recvMessagePane.getDocument();
