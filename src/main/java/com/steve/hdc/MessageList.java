@@ -77,7 +77,7 @@ public class MessageList {
 
         //Go through the list and add the JSONs for each message into an index.
         for(int i = 0; i < list.size(); i++) {
-            obj.put(Integer.toString(i), list.get(0));
+            obj.put(Integer.toString(i), list.get(i));
         }
 
         //Convert to a string and send it back.

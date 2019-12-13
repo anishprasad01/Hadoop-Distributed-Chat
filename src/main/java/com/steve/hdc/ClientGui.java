@@ -22,6 +22,8 @@ public class ClientGui {
     private JTextField fileNameField;
     private JButton recieveButton;
     private JButton clearButton;
+    private JTextField filePathField;
+    private JButton sendFileButton;
 
     public ClientGui(){
         sendButton.addActionListener(new ActionListener() {
@@ -35,18 +37,23 @@ public class ClientGui {
 
                 String response = null;
 
-                try{
-                    response = Client.sendMsg(username, password, new Message(username, recipient, sendMessageBox.getText()));
-                }
-                catch (Exception ex){
-                    System.err.println(ex);
-                }
-
-                if(response == null){
-                    toTextBox = username + ": " + sendMessageBox.getText();
+                if(recipient.equals("")){
+                    toTextBox = "Please specify a recipient";
                 }
                 else{
-                    toTextBox = response;
+                    try{
+                        response = Client.sendMsg(username, password, new Message(username, recipient, sendMessageBox.getText()));
+                    }
+                    catch (Exception ex){
+                        System.err.println(ex);
+                    }
+
+                    if(response == null){
+                        toTextBox = username + ": " + sendMessageBox.getText();
+                    }
+                    else{
+                        toTextBox = response;
+                    }
                 }
 
                 Document doc = recvMessagePane.getDocument();
@@ -126,13 +133,16 @@ public class ClientGui {
                 char[] passwordArray = passwordField.getPassword();
                 String password = passwordArray.toString();
 
-                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
-                Message[] messages = Client.getMsg(username, password, currentTime.getTime());
+                Message[] messages = Client.getMsg(username, password, 0);
 
                 Document doc = recvMessagePane.getDocument();
 
                 if(messages != null){
+                    try {
+                        doc.remove(0, doc.getLength());
+                    } catch (BadLocationException ex) {
+                        ex.printStackTrace();
+                    }
                     for(Message msg : messages){
                         try {
                             String toInsert = msg.getSender() + ": " + msg.getMessage();
@@ -175,6 +185,43 @@ public class ClientGui {
                 Message response = Client.getFile(username, password, filename);
 
                 response.toDisk();
+            }
+        });
+
+        sendFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                char[] passwordArray = passwordField.getPassword();
+                String password = passwordArray.toString();
+                String filepath = filePathField.getText();
+                String recipient = recipientField.getText();
+                String toTextBox = null;
+
+                String response = null;
+
+                System.out.println("PATH:" + filepath + ":END PATH");
+
+                if(filepath.equals("")){
+                    toTextBox = "Please specify a file path";
+                }
+                else{
+                    response = Client.sendMsg(username, password, new Message(username, recipient, filepath, true));
+                }
+
+                if(response == null){
+                    toTextBox = "File sent";
+                }
+                else {
+                    toTextBox = response;
+                }
+
+                Document doc = recvMessagePane.getDocument();
+                try {
+                    doc.insertString(doc.getLength(), toTextBox + "\n", null);
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }

@@ -30,8 +30,8 @@ public class Server {
 
     //Start the server (Listen to clients).
     public static void init() {
-        //Initialize the user's hashmap.
-        DataManager.createFolder("HDFS_DATA");
+        //Initialize the datamanager.
+        DataManager.init();
 
         //TODO: Check if serialized users file is found on server root.
         //      If it is, read it into the users hashmap.
@@ -71,20 +71,8 @@ public class Server {
             e.printStackTrace();
         }
 
-        //send to hdfs
-        //MIGHT NEED TO CHANGE TO APPEND
-        DataManager.createFile(local, hdfs);
-
-        //remove from disk
-        /*File fileToDelete = new File(local);
-        if(fileToDelete.delete())
-        {
-            System.err.println("File deleted");
-        }
-        else
-        {
-            System.out.println("File NOT deleted");
-        }*/
+        //Push the file to HDFS.
+        DataManager.pushFile(local, hdfs, true);
     }
 
 
@@ -107,15 +95,8 @@ public class Server {
         String senderPath = msg.getSender() + "/" + fileName;
 
         //Write the messages to HDFS for both the client and the server.
-        DataManager.createFile(fileName, recieverPath);
-        DataManager.createFile(fileName, senderPath);
-        /*
-        //Remove the local copy of the message.
-        File file = new File(fileName);
-
-        if (!file.delete()) {
-            System.err.println("Server: Error: Can't delete file from local storage");
-        }*/
+        DataManager.pushFile(fileName, recieverPath);
+        DataManager.pushFile(fileName, senderPath, true);
     }
 
 
@@ -130,11 +111,14 @@ public class Server {
      *  @return A MessageList which contains all the messages retrieved.
      */
     public static MessageList getMessages(String user, long time) {
-        //List of messages which will be sent back to user.
+        ///List of messages which will be sent back to user.
         MessageList msgs = new MessageList();
 
         //Get the list of files for the user.
         ArrayList<String> files = DataManager.fileList(user);
+
+        //Sort the filenames based on the timestamp.
+        files.sort(Comparator.comparing(String::toString));
 
         //Go through all the files, and remove the ones before the time, and file types.
         //File types are the ones that include an extension.
@@ -153,11 +137,8 @@ public class Server {
             //If the timestamp matches the right time, and
             //If the message is not a file (Does not have an extension), save it.
             if(timestamp >= time && !fileName.contains(".")) {
-                //Read the message file from hdfs into the local directory.
-                DataManager.readFile(user + "/" + fileName, fileName);
-
-                //Initialize the new message based on the serialized file.
-                Message newMsg = new Message(fileName, true);
+                //Read the message from hdfs into the message file.
+                Message newMsg = DataManager.readFile(fileName, user + "/" + fileName);
 
                 //Add the message to the list of messages.
                 msgs.add(newMsg);
@@ -193,10 +174,7 @@ public class Server {
             //If we find the file, read it and save it to the object.
             if(currFileName.equals(fileName)) {
                 //Read the message file from hdfs into the local directory.
-                DataManager.readFile(user + "/" + fileName, fileName);
-
-                //Initialize the new message based on the serialized file.
-                file = new Message(fileName, true);
+                file = DataManager.readFile(user + "/" + fileName, fileName);
             }
         }
 
@@ -217,8 +195,6 @@ public class Server {
             System.err.println("Server: Error: Signup error, user already exists.");
             return false;
         }
-
-        System.err.println("I do get herre ???? 5");
 
         //Create a folder for this user.
         DataManager.createFolder(user);
@@ -275,6 +251,11 @@ public class Server {
             return false;
         }
 
+        //Check if password contains invalid character.
+        if(pass.contains("_")) {
+            return false;
+        }
+
         //If we get here, the password is acceptable.
         return true;
     }
@@ -307,6 +288,8 @@ public class Server {
      * @param pass The password which the user is trying to sign-in with.
      */
     public static boolean auth(String user, String pass) {
+        return true;
+        /*
         //If the user does not exist, return false.
         if (!Server.userExists(user)) {
             return false;
@@ -318,16 +301,7 @@ public class Server {
         }
 
         //If we get here, authentication was Successfully done.
-        return true;
-    }
-
-    public static String[] getAuthInfo(List authHeader) {
-        String authString = Arrays.toString(authHeader.toArray());
-        int left = authString.indexOf("c");
-        int right = authString.indexOf("]");
-        String authInfo = authString.substring(left + 2, right);
-        String decodedAuth = new String(Base64.getDecoder().decode(authInfo.getBytes()));
-        return decodedAuth.split(" ");
+        return true;*/
     }
 
     public static void main(String[] args) {
@@ -342,8 +316,12 @@ public class Server {
 
         //Sample on how to sign up.
         Client.signup("Ardalan", "testpassword");
-        Message toSend = new Message("Ardalan", "Ardalan", "Message text");
+        Client.signup("Anish", "testpassword");
+        Message toSend = new Message("Ardalan", "Anish", "Message text");
         Client.sendMsg("Ardalan", "testpassword", toSend);
+        Message[] m = Client.getMsg("Ardalan", "testpassword", 0);
+
+
 /*
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");

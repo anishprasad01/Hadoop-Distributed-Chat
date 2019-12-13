@@ -81,12 +81,9 @@ public class Endpoints {
             return;
         }
 
-        System.err.println("I do get herre ????");
-
         //If we get here everythin wen't according to the plan.
-        System.err.println("Server: New user requested, user=" + user + " pass=" + pass);
+        System.err.println("Server: Created new user. Username=" + user);
 
-//        System.out.println("Users is: " + Server.getUsers());
         //Send success response
         res.setStatus(Status._201);                         //Code: Successfully Created
 
@@ -114,12 +111,9 @@ public class Endpoints {
         String body = s.hasNext() ? s.next() : "";
 
         //Get Authorization Info
-        List authHeader = req.getHeader("Authorization");
-        String[] authArray = Server.getAuthInfo(authHeader);
+        String[] authArray = Endpoints.getAuthInfo(req);
         String user = authArray[0];
         String pass = authArray[1];
-
-        System.err.println("USER: " + user + "PASS" + pass);
 
         //Check if authentication is unsuccessful.
         if (!Server.auth(user, pass)) {
@@ -140,9 +134,6 @@ public class Endpoints {
             res.send();                                     //Send response back.
             return;
         }
-
-        //TODO: Remove (Only for testing).
-        msg.dump();   //Show message content.
 
         //If everything went alright.
         res.setStatus(Status._201);                         //Code: Successfully Created
@@ -165,8 +156,7 @@ public class Endpoints {
         System.err.println("Server: Recieve Message requested from client " + req.getIp());
 
         //Get Authorization Info
-        List authHeader = req.getHeader("Authorization");
-        String[] authArray = Server.getAuthInfo(authHeader);
+        String[] authArray = Endpoints.getAuthInfo(req);
         String user = authArray[0];
         String pass = authArray[1];
 
@@ -190,6 +180,18 @@ public class Endpoints {
 
 
     /**
+     *  A function which gets the Auth header from the request, parses the
+     *  username and password. And retunrs an array with username and password.
+     *
+     *  @param req The HTTP request recieved.
+     *  @return An array with the first string being the username, second passowrd.
+     */
+    public static String[] getAuthInfo(Request req) {
+        return req.getHeader("Auth").get(0).split("_");
+    }
+
+
+    /**
      * The file recieve endpoint, is used by the clients to read file messages.
      * It is passed a filename. It reads the message into a JSON string and
      * sends it over to the client.  It communicates with the client
@@ -207,13 +209,12 @@ public class Endpoints {
         String fileName = (String) req.getHeader("File-Name").get(0);
 
         //Get Authorization Info
-        List authHeader = req.getHeader("Authorization");
-        String[] authArray = Server.getAuthInfo(authHeader);
+        String[] authArray = Endpoints.getAuthInfo(req);
         String user = authArray[0];
         String pass = authArray[1];
 
-        //Check if authentication is unsuccessful.
-        if (!Server.auth(user, pass)) {
+        //Check if authentication is unsuccessful, or filename is invalid.
+        if (!Server.auth(user, pass) || fileName.contains("..")) {
             res.setStatus(Status._403);                     //Code: Forbidden
             res.send();                                     //Send response back.
             return;
