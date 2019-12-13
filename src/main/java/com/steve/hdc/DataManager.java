@@ -16,7 +16,7 @@ import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.fs.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,6 +36,14 @@ public class DataManager{
         boolean isSuccess = fs.mkdirs(path);
         fs.close();
         return isSuccess;
+    }
+    public static FSDataOutputStream createFile(String path){
+        Configuration conf = new Configuration();
+        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
+        FileSystem fs  = FileSystem.get(conf);
+        Path path1 = new Path(path);
+        FSDataOutputStream out = fs.create(path);
+        return out;
     }
     public static boolean moveToHdfs(String local, String hdfs) throws IOException{
         boolean isSuccess;
@@ -60,7 +68,7 @@ public class DataManager{
         return isSuccess;
     }
 
-    public static Message readFile(String local, String hdfs) throws IOException{
+    public static Message copyTolocal(String local, String hdfs) throws IOException{
         Configuration conf = new Configuration();
         conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         FileSystem fs  = FileSystem.get(conf);
@@ -71,7 +79,7 @@ public class DataManager{
             isSuccess = false;
         }
         try{
-            fs.copyFromLocalFile(localpath, hdfspath);
+            fs.copyToLocalFile(localpath, hdfspath);
             isSuccess = true;
         }
         finally{
@@ -80,6 +88,14 @@ public class DataManager{
         return Message(local, true);
     }
 
+    public static FSDataInputStream readFile(String path) throws IOException {
+        Configuration conf = new Configuration(); 
+        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
+        FileSystem fs = FileSystem.get(conf);
+        Path path1 = new Path(path);
+        FSDataInputStream in = fs.open(path1);
+        return in;
+    }
 
 
 
