@@ -13,7 +13,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.RemoteIterator;
-
+import org.apache.hadoop.fs.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,40 +37,64 @@ public class DataManager{
         fs.close();
         return isSuccess;
     }
-//     public static FSDataOutputStream createFile(String file, Configuration conf) throws IOException{
-//         FileSystem fs  = FileSystem.get(conf);
-//         Path path = new Path(file);
-//         if(!fs.exists(path)){
-//             System.err.println("File " + file + "already exists");
-//         }
-//         FSDataOutputStream out = fs.create(path);
+    public static boolean moveToHdfs(String local, String hdfs) throws IOException{
+        boolean isSuccess;
+        Configuration conf = new Configuration();
+        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
+        FileSystem fs  = FileSystem.get(conf);
+        Path localpath = new Path(local);
+        Path hdfspath = new Path(hdfs);
+        if(fs.exists(hdfspath)){
+            System.err.println("File " + file + "already exists");
+            isSuccess = false;
+        }
+        try{
+            fs.moveFromLocalFile(localpath, hdfspath);
+            isSuccess = true;
+        }
+        finally{
+            fs.close();
+        }
+        
 
-//         return out;
-//     }
+        return isSuccess;
+    }
 
-//     public static FSDataInputStream readFile(String local, String hdfs, Configuration conf) throws IOException{
-//         FileSystem fs  = FileSystem.get(conf);
-//         Path path = new Path(file);
-//         FSDataInputStream in = fs.copyToLocalFile(false, hdfs, local, true);
-//         return in;
-//     }
+    public static Message readFile(String local, String hdfs) throws IOException{
+        Configuration conf = new Configuration();
+        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
+        FileSystem fs  = FileSystem.get(conf);
+        Path localpath = new Path(local);
+        Path hdfspath =new Path(hdfs);
+        if(fs.exists(hdfspath)){
+            System.err.println("File " + file + "already exists");
+            isSuccess = false;
+        }
+        try{
+            fs.copyFromLocalFile(localpath, hdfspath);
+            isSuccess = true;
+        }
+        finally{
+            fs.close();
+        }
+        return Message(local, true);
+    }
 
 
 
 
-//     public static List<Path> fileList(Path directory) throws IOException{
-//         List<Path> arr = new ArrayList<String> ();
-//         FileSystem fs = FileSystem.get(conf);
-//         RemoteIterator<LocatedFileStatus> i = fs.listFiles(path, true);
-//         while(i.hasNext()){
-//             LocatedFileStatus fileStatus = i.next();
-//             Path p = fileStatus.getPath();
-//             arr.add(p)
-//         }
-//         return arr;
+    public static List<Path> fileList(Path directory) throws IOException{
+        List<Path> arr = new ArrayList<String> ();
+        FileSystem fs = FileSystem.get(conf);
+        RemoteIterator<LocatedFileStatus> i = fs.listFiles(path, true);
+        while(i.hasNext()){
+            LocatedFileStatus fileStatus = i.next();
+            Path p = fileStatus.getPath();
+            arr.add(p)
+        }
+        return arr;
 
 
-//     }
-//     public static void
-// }
-// 
+    }
+    
+}
