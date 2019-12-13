@@ -32,7 +32,7 @@ public class DataManager{
         Configuration conf = new Configuration();
         conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         FileSystem fs = FileSystem.get((Configuration)conf);
-        Path path = new Path(foldername);
+        Path path = new Path("HDFS_DATA/" + foldername);
         boolean isSuccess = fs.mkdirs(path);
         fs.close();
         return isSuccess;
@@ -51,7 +51,7 @@ public class DataManager{
         conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         FileSystem fs  = FileSystem.get(conf);
         Path localpath = new Path(local);
-        Path hdfspath = new Path(hdfs);
+        Path hdfspath = new Path("HDFS_DATA/" + hdfs);
         if(fs.exists(hdfspath)){
             System.err.println("File " + file + "already exists");
             isSuccess = false;
@@ -73,7 +73,7 @@ public class DataManager{
         conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         FileSystem fs  = FileSystem.get(conf);
         Path localpath = new Path(local);
-        Path hdfspath =new Path(hdfs);
+        Path hdfspath =new Path("HDFS_DATA/" + hdfs);
         if(fs.exists(hdfspath)){
             System.err.println("File " + file + "already exists");
             isSuccess = false;
