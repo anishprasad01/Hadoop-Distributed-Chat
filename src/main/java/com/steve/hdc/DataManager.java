@@ -25,31 +25,34 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class DataManager{
-    public static final String DEFAULT_FILE_SYSTEM = "fs.defaultFS";
-    public static final String URI_FILE_SYSTEM = "hdsf://master: 8088"
-
-    public static boolean createFolder(String foldername) throws IOException{
-        Configuration conf = new Configuration();
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
-        FileSystem fs = FileSystem.get((Configuration)conf);
+    public FileSystem configureFileSystem(String coreSitePath, String hdfsSitePath){
+        FileSystem fs = null;
+        try{
+            Configuration conf = new Configuration();
+            conf.setBoolean("dfs.support.append", true);
+            Path coreSite = new Path(coreSitePath);
+            Path hdfsSite = new Path(hdfsSitePath);
+            conf.addResource(coreSite);
+            conf.addResource(hdfsSite);
+            fs = FileSystem.get(conf);
+        } catch(IOException e){
+            System.err.println("Error ocurred while configuring FileSystem");
+        }
+        return fs;
+    }
+    public static boolean createFolder(FileSystem fs, String foldername) throws IOException{
         Path path = new Path("HDFS_DATA/" + foldername);
         boolean isSuccess = fs.mkdirs(path);
         fs.close();
         return isSuccess;
     }
-    public static FSDataOutputStream createFile(String path){
-        Configuration conf = new Configuration();
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
-        FileSystem fs  = FileSystem.get(conf);
+    public static FSDataOutputStream createFile(FileSystem fs, String path){
         Path path1 = new Path(path);
         FSDataOutputStream out = fs.create(path);
         return out;
     }
-    public static boolean moveToHdfs(String local, String hdfs) throws IOException{
+    public static boolean moveToHdfs(FileSystem fs, String local, String hdfs) throws IOException{
         boolean isSuccess;
-        Configuration conf = new Configuration();
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
-        FileSystem fs  = FileSystem.get(conf);
         Path localpath = new Path(local);
         Path hdfspath = new Path("HDFS_DATA/" + hdfs);
         if(fs.exists(hdfspath)){
@@ -68,10 +71,7 @@ public class DataManager{
         return isSuccess;
     }
 
-    public static Message copyTolocal(String local, String hdfs) throws IOException{
-        Configuration conf = new Configuration();
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
-        FileSystem fs  = FileSystem.get(conf);
+    public static Message copyTolocal(FileSystem fs, String local, String hdfs) throws IOException{
         Path localpath = new Path(local);
         Path hdfspath =new Path("HDFS_DATA/" + hdfs);
         if(fs.exists(hdfspath)){
@@ -88,10 +88,7 @@ public class DataManager{
         return Message(local, true);
     }
 
-    public static FSDataInputStream readFile(String path) throws IOException {
-        Configuration conf = new Configuration(); 
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
-        FileSystem fs = FileSystem.get(conf);
+    public static FSDataInputStream readFile(FileSystem fs, String path) throws IOException {
         Path path1 = new Path(path);
         FSDataInputStream in = fs.open(path1);
         return in;
@@ -99,21 +96,26 @@ public class DataManager{
 
 
 
-    public static List<Path> fileList(String dstr) throws IOException{
+    public static List<String> fileList(FileSystem fs, String dstr) throws IOException{
         Path directory = new Path(dstr);
-        Configuration conf = new Configuration(); 
-        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         List<Path> arr = new ArrayList<String> ();
-        FileSystem fs = FileSystem.get(conf);
         RemoteIterator<LocatedFileStatus> i = fs.listFiles(directory, true);
         while(i.hasNext()){
             LocatedFileStatus fileStatus = i.next();
-            Path p = fileStatus.getPath();
-            arr.add(p)
+            Path p = fileStatus.getPath().toString();
+            arr.add(p);
         }
         return arr;
 
 
+    }
+    public static void close(FileSystem fs){
+        try{
+            fs.close();
+        }
+        catch(IOException e){
+            System.err.println("error on closing file system");
+        }
     }
     
 }
