@@ -84,6 +84,8 @@ public class DataManager{
 
 
     public static List<Path> fileList(Path directory) throws IOException{
+        Configuration conf = new Configuration(); 
+        conf.set(DEFAULT_FILE_SYSTEM, URI_FILE_SYSTEM);
         List<Path> arr = new ArrayList<String> ();
         FileSystem fs = FileSystem.get(conf);
         RemoteIterator<LocatedFileStatus> i = fs.listFiles(path, true);
