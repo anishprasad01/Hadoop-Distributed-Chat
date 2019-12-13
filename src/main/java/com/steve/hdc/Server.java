@@ -21,18 +21,18 @@ public class Server {
     /** A hashmap which holds the username and password data. */
     public static ConcurrentHashMap<String, String> users = null;
 
+    /** The filename where the users credentials will be stored. */
+    public static String credentialsFile = "users";
+
     //Start the server (Listen to clients).
     public static void init() {
-        //Initialize the datamanager.
-        DataManager.init();
-
         //TODO: Check if serialized users file is found on server root.
         //      If it is, read it into the users hashmap.
         //      If not, just initalize it like this:
         users = new ConcurrentHashMap<>();
 
         //Run the Server and listen to connections (Start the endpoints).
-        System.err.println("Hadoop Distributed Chat Server Started on Port " + PORT);
+        System.err.println("Server: HDC Server Started on Port " + PORT + ".");
         Express app = new Express();
         app.bind(new Endpoints());
         app.listen(PORT);
@@ -47,8 +47,8 @@ public class Server {
 
         //filepaths
         //CHECK THESE PATHS
-        String local = "users";
-        String hdfs = "users";
+        String local = Server.credentialsFile;
+        String hdfs = Server.credentialsFile;
 
         //serialize user hashmap
         JSONObject obj = new JSONObject();
@@ -287,9 +287,8 @@ public class Server {
      */
     public static boolean auth(String user, String pass) {
         return true;
-        /*
         //If the user does not exist, return false.
-        if (!Server.userExists(user)) {
+        /*if (!Server.userExists(user)) {
             return false;
         }
 
@@ -303,6 +302,14 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        //If the user has requested a local storage, run DataManager locally.
+        boolean isRunningLocally = false;
+        if(args.length == 1 && args[0].equals("-l"))
+            isRunningLocally = true;
+
+        //Initialize the datamanager.
+        DataManager.init(isRunningLocally);
+
         //Initialize and Start the server and wait for clients.
         Server.init();
 
@@ -313,14 +320,14 @@ public class Server {
         //All functions are static, so you call them without an object.
 
         //Sample on how to sign up.
-        Client.signup("Ardalan", "testpassword");
+        /*Client.signup("Ardalan", "testpassword");
         Client.signup("Anish", "testpassword");
         Message toSend = new Message("Ardalan", "Anish", "Message text");
         Client.sendMsg("Ardalan", "testpassword", toSend);
         Message[] m = Client.getMsg("Ardalan", "testpassword", 0);
 
         Message fileSend = new Message("Ardalan", "Anish", "testfile.pdf", true);
-        Client.sendMsg("Ardalan", "testpassword", fileSend);
+        Client.sendMsg("Ardalan", "testpassword", fileSend);*/
 /*
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");

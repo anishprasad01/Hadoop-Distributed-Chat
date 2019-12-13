@@ -8,4 +8,4 @@ mvn package
 echo '--------------- Running ------------------'
 
 # Run the script
-java -jar ./target/Hadoop-Distributed-Chat-1.0.jar
+java -jar ./target/Hadoop-Distributed-Chat-1.0.jar $1
