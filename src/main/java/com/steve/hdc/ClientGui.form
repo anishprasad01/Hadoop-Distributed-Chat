@@ -57,14 +57,6 @@
           <text value="Password"/>
         </properties>
       </component>
-      <component id="82691" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Type your Message"/>
-        </properties>
-      </component>
       <component id="8589d" class="javax.swing.JLabel">
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -89,17 +81,6 @@
           <background color="-16727354"/>
           <foreground color="-1"/>
           <text value="Sign Up"/>
-        </properties>
-      </component>
-      <component id="c5be0" class="javax.swing.JTextField" binding="sendMessageBox">
-        <constraints>
-          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties>
-          <background color="-1"/>
-          <foreground color="-16777216"/>
         </properties>
       </component>
       <component id="684b" class="javax.swing.JButton" binding="getFileButton" default-binding="true">
@@ -128,42 +109,6 @@
           <text value="Filename"/>
         </properties>
       </component>
-      <component id="a9372" class="javax.swing.JButton" binding="sendButton">
-        <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-851810"/>
-          <foreground color="-1"/>
-          <text value="Send"/>
-        </properties>
-      </component>
-      <component id="8a1a4" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Enter File Path"/>
-        </properties>
-      </component>
-      <component id="2dcdf" class="javax.swing.JTextField" binding="filePathField">
-        <constraints>
-          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="c96b9" class="javax.swing.JButton" binding="sendFileButton">
-        <constraints>
-          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-3251968"/>
-          <foreground color="-1"/>
-          <text value="Send"/>
-        </properties>
-      </component>
       <component id="b9d6d" class="javax.swing.JButton" binding="clearButton" default-binding="true">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -182,6 +127,61 @@
           <background color="-16727217"/>
           <foreground color="-1"/>
           <text value="Retrieve Messages"/>
+        </properties>
+      </component>
+      <component id="2dcdf" class="javax.swing.JTextField" binding="filePathField">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="c5be0" class="javax.swing.JTextField" binding="sendMessageBox">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+          <foreground color="-16777216"/>
+        </properties>
+      </component>
+      <component id="82691" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Type your Message"/>
+        </properties>
+      </component>
+      <component id="8a1a4" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Enter File Path"/>
+        </properties>
+      </component>
+      <component id="a9372" class="javax.swing.JButton" binding="sendButton">
+        <constraints>
+          <grid row="9" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-851810"/>
+          <foreground color="-1"/>
+          <text value="Send"/>
+        </properties>
+      </component>
+      <component id="c96b9" class="javax.swing.JButton" binding="sendFileButton">
+        <constraints>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-3251968"/>
+          <foreground color="-1"/>
+          <text value="Send File"/>
         </properties>
       </component>
     </children>
