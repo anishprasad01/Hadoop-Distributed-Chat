@@ -12,21 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;   //For User/Pass data.
 public class Server {
     public static final int PORT = 8082;
 
-    /**
-     * Minimum number of characters for the username.
-     */
+    /** Minimum number of characters for the username. */
     public static final int MIN_CHARACTERS_USER = 4;
 
-    /**
-     * Minimum number of characters for the username and password.
-     */
+    /** Minimum number of characters for the username and password. */
     public static final int MIN_CHARACTERS_PASS = 6;
 
+    /** A hashmap which holds the username and password data. */
     public static ConcurrentHashMap<String, String> users = null;
-
-    public static ConcurrentHashMap getUsers() {
-        return users;
-    }
 
     //Start the server (Listen to clients).
     public static void init() {
@@ -88,15 +81,14 @@ public class Server {
      */
     public static void route(Message msg) {
         //Write the message to local disk.
-        String fileName = msg.toDisk();
+        String[] fileNames = msg.toDisk();
 
-        //Create the filename for the message which will be saved.
-        String recieverPath = msg.getReciever() + "/" + fileName;
-        String senderPath = msg.getSender() + "/" + fileName;
-
-        //Write the messages to HDFS for both the client and the server.
-        DataManager.pushFile(fileName, recieverPath);
-        DataManager.pushFile(fileName, senderPath, true);
+        //For every file in the list of written files, move them to hadoop.
+        for(String file : fileNames) {
+            //Write the messages to HDFS for both the client and the server.
+            DataManager.pushFile(file, msg.getReciever() + "/" + file);
+            DataManager.pushFile(file, msg.getSender() + "/" + file, true);
+        }
     }
 
 
@@ -174,7 +166,7 @@ public class Server {
             //If we find the file, read it and save it to the object.
             if(currFileName.equals(fileName)) {
                 //Read the message file from hdfs into the local directory.
-                file = DataManager.readFile(user + "/" + fileName, fileName);
+                file = DataManager.readFile(fileName, user + "/" + fileName);
             }
         }
 
@@ -321,7 +313,8 @@ public class Server {
         Client.sendMsg("Ardalan", "testpassword", toSend);
         Message[] m = Client.getMsg("Ardalan", "testpassword", 0);
 
-
+        Message fileSend = new Message("Ardalan", "Anish", "testfile.pdf", true);
+        Client.sendMsg("Ardalan", "testpassword", fileSend);
 /*
         //Sample on how to send a message.
         Message toSend = new Message("Me", "You", "Message text");

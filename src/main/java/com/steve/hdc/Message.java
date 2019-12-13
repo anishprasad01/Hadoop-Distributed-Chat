@@ -195,19 +195,20 @@ public class Message implements Serializable {
      *  The message can be reconstructed with one of the constructors.
      *  Specifically, public Message(String serializedFileName).
      *
-     *  @return The file name in which the message was written to.
+     *  @return The file names in which the message was written to. When files
+     *           are written the placeholder name and filename will be returned.
      */
-    public String toDisk() {
+    public String[] toDisk() {
         //The File name which is returned to the calling entity.
-        String outputFile = "" ;
+        ArrayList<String> outputFiles = new ArrayList<String>();
+        outputFiles.add(String.valueOf(time) + "_" + this.sender + "_" + this.reciever) ;
 
         //Check if it's a regular msg, or file placeholder.
         if(this.type.equals(TYPE_MSG) || this.type.equals(TYPE_PLACEHOLDER)) {
-            outputFile = String.valueOf(time) + "_" + this.sender + "_" + this.reciever ;
 
             try {
                 //Create streams for writing to output.
-                FileOutputStream fos = new FileOutputStream(outputFile);
+                FileOutputStream fos = new FileOutputStream(outputFiles.get(0));
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
 
                 //Write the current object to the file.
@@ -220,11 +221,10 @@ public class Message implements Serializable {
                 e.printStackTrace();
             }
         } else {    //If it gets here it's a data file.
-
             try {
                 //First write the actual file data to the disk.
-                outputFile = this.type ;
-                Files.write(Paths.get(outputFile), this.content);
+                outputFiles.add(this.type) ;
+                Files.write(Paths.get(outputFiles.get(1)), this.content);
             } catch (Exception e) {
                 //If we get here there was an error writing the file.
                 e.printStackTrace();
@@ -237,8 +237,14 @@ public class Message implements Serializable {
             placeholder.toDisk();
         }
 
-        //Return the name of the created file.
-        return outputFile;
+        //Convert the output to an array.
+        String[] fileNames = new String[outputFiles.size()];
+        for(int i = 0; i < outputFiles.size(); i++) {
+            fileNames[i] = outputFiles.get(i);
+        }
+
+        //Return the names of the created files.
+        return fileNames;
     }
 
 
