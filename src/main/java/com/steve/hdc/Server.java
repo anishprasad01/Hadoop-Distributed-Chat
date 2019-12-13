@@ -166,7 +166,13 @@ public class Server {
             //If we find the file, read it and save it to the object.
             if(currFileName.equals(fileName)) {
                 //Read the message file from hdfs into the local directory.
-                file = DataManager.readFile(fileName, user + "/" + fileName);
+                DataManager.pullFile(user + "/" + fileName, fileName);
+
+                //Read the file into memory and a message object.
+                file = new Message(user, user, fileName, true);
+
+                //Remove the local copy of the file.
+                DataManager.rmLocalFile(fileName);
             }
         }
 
