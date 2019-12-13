@@ -43,7 +43,7 @@ public class DataManager{
     public static boolean createFolder(FileSystem fs, String foldername) throws IOException{
         Path path = new Path("HDFS_DATA/" + foldername);
         boolean isSuccess = fs.mkdirs(path);
-        fs.close();
+        close(fs);
         return isSuccess;
     }
     public static FSDataOutputStream createFile(FileSystem fs, String path){
@@ -64,7 +64,7 @@ public class DataManager{
             isSuccess = true;
         }
         finally{
-            fs.close();
+            close(fs);
         }
         
 
@@ -83,7 +83,7 @@ public class DataManager{
             isSuccess = true;
         }
         finally{
-            fs.close();
+            close(fs);
         }
         return Message(local, true);
     }
