@@ -21,6 +21,7 @@ public class ClientGui {
     private JButton getFileButton;
     private JTextField fileNameField;
     private JButton recieveButton;
+    private JButton clearButton;
 
     public ClientGui(){
         sendButton.addActionListener(new ActionListener() {
@@ -134,18 +135,34 @@ public class ClientGui {
                 if(messages != null){
                     for(Message msg : messages){
                         try {
-                            System.out.println(msg.toJSON());
-                            JSONObject obj = new JSONObject(msg.toJSON());
-                            String toInsert = obj.getString("reciever") + ": " + obj.get("content");
+                            String toInsert = msg.getSender() + ": " + msg.getMessage();
                             doc.insertString(doc.getLength(),toInsert + "\n",null);
                         } catch (BadLocationException ble) {
                             ble.printStackTrace();
                         }
                     }
                 }
+                else{
+                    try {
+                        doc.insertString(doc.getLength(), "No New Messages" + "\n", null);
+                    } catch (BadLocationException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         });
-        //getMessages();
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Document doc = recvMessagePane.getDocument();
+                try {
+                    doc.remove(0, doc.getLength());
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -154,37 +171,6 @@ public class ClientGui {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
-
-    public void getMessages(){
-        String username = usernameField.getText();
-        char[] passwordArray = passwordField.getPassword();
-        String password = passwordArray.toString();
-
-        if(username != null && password != null){
-            while(true){
-                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
-                Message[] messages = Client.getMsg(username, password, currentTime.getTime());
-
-                Document doc = recvMessagePane.getDocument();
-
-                if(messages != null){
-                    for(Message msg : messages){
-                        try {
-                            doc.insertString(doc.getLength(),msg.getContent().toString() + "\n",null);
-                        } catch (BadLocationException ble) {
-                            ble.printStackTrace();
-                        }
-                    }
-                }
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }//end while loop
-        }
     }
 }
 
