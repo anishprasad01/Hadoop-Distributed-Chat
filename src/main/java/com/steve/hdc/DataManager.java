@@ -18,28 +18,19 @@ public class DataManager{
 
     //A function to execute a given set of arguments.
     private static boolean exec(String args) {
-        //If we're running locally.
-        if(DataManager.isLocal) {
-            try{
-                //Execute the commands.
-                Process p = Runtime.getRuntime().exec(args);
+        try{
+            //Execute the commands.
+            Process p = Runtime.getRuntime().exec(args);
 
-                //Wait for the process to finish.
-                p.waitFor();
-            } catch(Exception e){
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-
-        //If we're in remote mode.
-        } else {
-
+            //Wait for the process to finish.
+            p.waitFor();
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
 
-        //If we get here, an error occured.
-        return false;
+        //If we get here, no error occured.
+        return true;
     }
 
     //Create a root directory. TODO: Initialize it if it exists.
@@ -54,7 +45,7 @@ public class DataManager{
 
         //If we're in remote mode.
         } else {
-
+            exec("hdfs dfs -mkdir " + ROOT_NAME);
         }
     }
 
@@ -63,14 +54,10 @@ public class DataManager{
         //If we're running locally.
         if(DataManager.isLocal) {
             return exec("mkdir " + ROOT_NAME + "/" + foldername);
-
         //If we're in remote mode.
         } else {
-
+            return exec("hdfs dfs -mkdir " + ROOT_NAME + "/" + foldername);
         }
-
-        //If we get here it was unsuccesful.
-        return false;
     }
 
 
@@ -79,29 +66,18 @@ public class DataManager{
         //If we're running locally.
         if(DataManager.isLocal) {
             return exec("cp " + local + " " + ROOT_NAME + "/" + hdfs);
-
         //If we're in remote mode.
         } else {
-
+            return exec("hdfs dfs -put " + local + " " + ROOT_NAME + "/" + hdfs);
         }
-
-        //If we get here it was unsuccesful.
-        return false;
     }
 
     //Pushes a file and also removes the local copy.
     public static boolean pushFile(String local, String hdfs, boolean rm){
-        //If we're running locally.
-        if(DataManager.isLocal) {
-            //Remove the file if the move was successful.
-            if(pushFile(local, hdfs)) {
-                rmLocalFile(local);
-                return true;
-            }
-
-        //If we're in remote mode.
-        } else {
-
+        //Remove the file if the move was successful.
+        if(pushFile(local, hdfs)) {
+            rmLocalFile(local);
+            return true;
         }
 
         //If we get here it was unsuccesful.
@@ -113,14 +89,10 @@ public class DataManager{
         //If we're running locally.
         if(DataManager.isLocal) {
             return exec("cp  " + ROOT_NAME + "/" + hdfs + " " + local);
-
         //If we're in remote mode.
         } else {
-
+            return exec("hdfs dfs -copyToLocal " + ROOT_NAME + "/" + hdfs + " " + local);
         }
-
-        //If we get here it was unsuccesful.
-        return false;
     }
 
 
@@ -128,16 +100,9 @@ public class DataManager{
     public static Message readFile(String local, String hdfs){
         Message msg = null;
 
-        //If we're running locally.
-        if(DataManager.isLocal) {
-            exec("cp " + ROOT_NAME + "/" +  hdfs + " " + local);
-            msg = new Message(local, true);
-            rmLocalFile(local);
-
-        //If we're in remote mode.
-        } else {
-
-        }
+        DataManager.pullFile(hdfs, local);
+        msg = new Message(local, true);
+        rmLocalFile(local);
 
         return msg;
     }
@@ -151,7 +116,7 @@ public class DataManager{
 
         //If we're in remote mode.
         } else {
-
+            exec("hdfs dfs -rm " + ROOT_NAME + "/" + filename);
         }
 
     }
@@ -161,32 +126,35 @@ public class DataManager{
         //To hold the filenames.
         ArrayList<String> arr = new ArrayList<String> ();
 
-        //If we're running locally.
-        if(DataManager.isLocal) {
-            try{
-                //List all the files, while changing their names
-                Process p = Runtime.getRuntime().exec("ls " + ROOT_NAME + "/" + filename + "/ | tr \"\t\" \"\n\"");
-                BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        //For finding the command.
+        String cmd = new String();
 
-                //Read every line of the std output and save it to array.
-                String s = null;
-                while ((s = stdInput.readLine()) != null) {
-                    arr.add(s);
-                }
 
-                //Remove the head of array since it's the command executed.
-                arr.remove(0);
+        if(DataManager.isLocal) {                   //If we're running locally.
+            cmd = "ls " + ROOT_NAME + "/" + filename + "/ | tr \"\t\" \"\n\"";
+        } else {                                    //If we're in remote mode.
+            cmd = "hdfs dfs -ls -C " + ROOT_NAME + "/" + filename + "/ | tr \"\t\" \"\n\"";
+        }
 
-                //Wait till the execution is complete.
-                p.waitFor();
+        try{
+            //List all the files, while changing their names
+            Process p = Runtime.getRuntime().exec(cmd);
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-            } catch(Exception e){
-                e.printStackTrace();
+            //Read every line of the std output and save it to array.
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                arr.add(s);
             }
 
-        //If we're in remote mode.
-        } else {
+            //Remove the head of array since it's the command executed.
+            arr.remove(0);
 
+            //Wait till the execution is complete.
+            p.waitFor();
+
+        } catch(Exception e){
+            e.printStackTrace();
         }
 
         return arr;
