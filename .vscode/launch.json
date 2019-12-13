@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ClientGui",
+            "request": "launch",
+            "mainClass": "com.steve.hdc.ClientGui",
+            "projectName": "Hadoop-Distributed-Chat"
+        }
+    ]
+}
