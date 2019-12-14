@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 public class ClientGui {
+    //gui components
     private JButton sendButton;
     private JTextField sendMessageBox;
     private JTextPane recvMessagePane;
@@ -27,7 +28,9 @@ public class ClientGui {
     private JTextField filePathField;
     private JButton sendFileButton;
 
+    //all functions call the Client class to accomplish tasks
     public ClientGui(){
+        //sends a message, check the response, and modifies the recieve window and send box
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,6 +76,7 @@ public class ClientGui {
             }
         });
 
+        //signs up a user, check the response, and modifies the recieve window and send box
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -101,6 +105,8 @@ public class ClientGui {
             }
         });
 
+        //gets a file, check the response, and modifies the recieve window and send box
+        //saves the file to disk if it comes back
         getFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -125,9 +131,17 @@ public class ClientGui {
                 } catch (BadLocationException ble) {
                     ble.printStackTrace();
                 }
+
+                Document sendDoc = fileNameField.getDocument();
+                try {
+                    sendDoc.remove(0,sendDoc.getLength());
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
+        //gets new messages, check the response, and modifies the recieve window and send box
         recieveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,6 +178,7 @@ public class ClientGui {
             }
         });
 
+        //clears the recieve box
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,6 +191,7 @@ public class ClientGui {
             }
         });
 
+        //gets a message, check the response, and modifies the recieve window and send box
         getFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,6 +217,7 @@ public class ClientGui {
             }
         });
 
+        //sends a file, check the response, and modifies the recieve window and send box
         sendFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -235,10 +252,18 @@ public class ClientGui {
                 } catch (BadLocationException ex) {
                     ex.printStackTrace();
                 }
+
+                Document sendDoc = filePathField.getDocument();
+                try {
+                    sendDoc.remove(0,sendDoc.getLength());
+                } catch (BadLocationException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
+    //initialize and run the gui
     public static void main(String[] args) {
         JFrame frame = new JFrame("Hadoop Distributed Chat Client");
         frame.setContentPane(new ClientGui().panel1);
