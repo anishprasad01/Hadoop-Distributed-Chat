@@ -26,8 +26,9 @@ public class Client {
     /**
      * A constant which represents the address of the server.
      */
-    public static final String ADDRESS = "10.65.67.22:8082";
-
+    public static final String ADDRESS = "192.168.43.9:8786";
+    //public static final String ADDRESS = "0.0.0.0:8786";
+    //public static final String ADDRESS = "10.65.67.22:8082";
 
     /**
      * A function for sigining up the user in the server. It uses HTTP calls to

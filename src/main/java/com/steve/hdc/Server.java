@@ -10,7 +10,7 @@ import java.lang.*;
 import java.util.concurrent.ConcurrentHashMap;   //For User/Pass data.
 
 public class Server {
-    public static final int PORT = 8082;
+    public static final int PORT = 8786;
 
     /** Minimum number of characters for the username. */
     public static final int MIN_CHARACTERS_USER = 4;
